@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="15">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="23">
  <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="1" columns="0">
   <tile id="1">
    <image width="32" height="32" source="placeholder_player.png"/>
@@ -18,15 +18,20 @@
  </tileset>
  <layer name="Tile Layer 1" width="22" height="18">
   <data encoding="base64" compression="zlib">
-   eJy9lMkKwCAMRD2ULmoXSg9K/f/vbAQPEhKN0vbwUFwm4wgxSikD+DR+ievco7xxfjmdP95H1fdobwPORlZBXQvMwIUIxFpkAbQgG1vQwNxp1IyWQ7r4Hp5jOF3st+SReos0h5I3Kotev7U6NV2X6Ur+LhC6+V/luUTdvSHjQ5jDBAyNjALdlp5S6h9OcOaPfsKtSfrbGz3wARB7Fd4=
+   eJy9lNkKhDAMRQsu4zozLg8V/f/vNAWFcklq6vZwqLR6chshtTGmJqZtfRJ78ozLJuWVPG/cj6s/wdmX6CNpFXUboiBGYGH2HCVRKXrTBBzIvK2V4LLgxe/wGZG8mDeU0d0lITLGe9SHULbds9efL+TFOh0xRPTBel7Nv1sYr/+v/L4470/pc/yVffgQaSS5whszU0LzwyreeWOeSHua+XbHDFwBaxQVqA==
   </data>
  </layer>
  <objectgroup name="Object">
   <object id="5" name="Player" type="Player" gid="2" x="160" y="144" width="32" height="32"/>
+  <object id="15" type="Wall" x="208" y="128" width="32" height="48"/>
+  <object id="19" type="Wall" x="64" y="48" width="16" height="176"/>
+  <object id="20" type="Wall" x="64" y="48" width="224" height="16"/>
+  <object id="21" type="Wall" x="272" y="48" width="16" height="176"/>
+  <object id="22" type="Wall" x="64" y="208" width="224" height="16"/>
  </objectgroup>
- <layer name="Collision" width="22" height="18">
+ <layer name="Collision" width="22" height="18" visible="0" opacity="0.85">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF9ATyZGJizCXHLaPmjpo7WMylRb4YBdQFAI2oBVU=
+   eJxjYBgF9ATyZGJizCXHLSPRXPQwHanmkusWWplLi3wxCqgLAKX6Bg8=
   </data>
  </layer>
 </map>
