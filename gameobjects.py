@@ -75,6 +75,13 @@ class Player(pygame.sprite.Sprite):
             'walk_right':  zip([images[x] for x in [10, 9, 11, 9]], [200]*4),
         }
 
+        self.idle_transitions = {
+            'walk_up': 'idle_up',
+            'walk_down': 'idle_down',
+            'walk_left': 'idle_left',
+            'walk_right': 'idle_right',
+        }
+
         for k, v in self.animations.items():
             self.animations[k] = pyganim.PygAnimation(list(v))
         
@@ -83,6 +90,10 @@ class Player(pygame.sprite.Sprite):
         print(self.animations)
 
     def animate(self, name):
+        if name == 'idle':
+            name = self.idle_transitions.get(self.active_anim, 'idle_down')
+            print('transition from {0} to {1}'.format(self.active_anim, name))
+
         self.animations[name].play()
         self.active_anim = name
 
@@ -127,6 +138,16 @@ class Player(pygame.sprite.Sprite):
 
             self.destination = self.rect.x + d_x * self.movestep, self.rect.y + d_y * self.movestep
 
+            if d_x < 0:
+                self.animate('walk_left')
+            elif d_x > 0:
+                self.animate('walk_right')
+            elif d_y < 0:
+                self.animate('walk_up')
+            elif d_y > 0:
+                self.animate('walk_down')
+            # No else: 'idle' because it would reset every idle frame
+
         distance_x = abs(self.destination[0] - self.position[0])
         distance_y = abs(self.destination[1] - self.position[1])
 
@@ -142,8 +163,9 @@ class Player(pygame.sprite.Sprite):
         y += d_y
         self.position = (int(x), int(y))
 
-        if self.position == self.destination:
+        if self.position == self.destination and self.velocity != (0, 0):
             self.velocity = (0, 0)
+            self.animate('idle')
 
         self.update_animation()
 
