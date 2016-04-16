@@ -2,7 +2,9 @@ import pygame
 import pyganim
 
 import logging
+
 logger = logging.getLogger()
+
 
 class Teleport(pygame.sprite.Sprite):
     @classmethod
@@ -37,14 +39,14 @@ class Player(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(self, tmx_object):
         player = Player((tmx_object.x, tmx_object.y))
-        #player.image = tmx_object.image
+        # player.image = tmx_object.image
         player.id = tmx_object.id
 
         return player
 
     def __init__(self, position, movestep=32, speed=200):
         super(Player, self).__init__()
-        #self.image = pygame.image.load("examples/placeholder_player.png")
+        # self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.build_animations()
         self.update_animation()
@@ -66,8 +68,8 @@ class Player(pygame.sprite.Sprite):
 
     def build_animations(self):
         images = pyganim.getImagesFromSpriteSheet(
-                            'examples/placeholder_player_ani.png',
-                            rows=4, cols=3, rects=[])
+            'examples/placeholder_player_ani.png',
+            rows=4, cols=3, rects=[])
 
         self.animations = {
             'idle_up': [(images[0], 100)],
@@ -75,10 +77,10 @@ class Player(pygame.sprite.Sprite):
             'idle_left': [(images[6], 100)],
             'idle_right': [(images[9], 100)],
 
-            'walk_up':  zip([images[x] for x in [1, 0, 2, 0]], [200]*4),
-            'walk_down':  zip([images[x] for x in [4, 3, 5, 3]], [200]*4),
-            'walk_left':  zip([images[x] for x in [7, 6, 8, 6]], [200]*4),
-            'walk_right':  zip([images[x] for x in [10, 9, 11, 9]], [200]*4),
+            'walk_up': zip([images[x] for x in [1, 0, 2, 0]], [200] * 4),
+            'walk_down': zip([images[x] for x in [4, 3, 5, 3]], [200] * 4),
+            'walk_left': zip([images[x] for x in [7, 6, 8, 6]], [200] * 4),
+            'walk_right': zip([images[x] for x in [10, 9, 11, 9]], [200] * 4),
         }
 
         self.idle_transitions = {
@@ -150,7 +152,7 @@ class Player(pygame.sprite.Sprite):
                 self.animate('walk_up')
             elif d_y > 0:
                 self.animate('walk_down')
-            # No else: 'idle' because it would reset every idle frame
+                # No else: 'idle' because it would reset every idle frame
 
         distance_x = abs(self.destination[0] - self.position[0])
         distance_y = abs(self.destination[1] - self.position[1])
@@ -180,8 +182,6 @@ class Player(pygame.sprite.Sprite):
         # keep our feet on the ground
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
-
-
 
     # This is used to move back from walls
     # Should really be more generic collision response
@@ -228,3 +228,21 @@ class Player(pygame.sprite.Sprite):
 
         # and reset input
         self.reset_inputs()
+
+
+class RisingPlatform(pygame.sprite.Sprite):
+    @classmethod
+    def from_tmx(cls, tmx_object):
+        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y))
+        rising_platform.id = tmx_object.id
+        return rising_platform
+
+    def __init__(self, position):
+        super(RisingPlatform, self).__init__()
+        self.position = position
+
+    def on_event(self, event):
+        pass
+
+    def update(self, d_t):
+        pass
