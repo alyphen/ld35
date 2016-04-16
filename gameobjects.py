@@ -201,15 +201,19 @@ class Player(pygame.sprite.Sprite):
             if overlap.collidepoint(self.feet.midtop):
                 y -= overlap.height
                 y = self._old_position[1]
+                self.reset_inputs()
             elif overlap.collidepoint(self.feet.midleft):
                 x += overlap.width
                 x = self._old_position[0]
+                self.reset_inputs()
             elif overlap.collidepoint(self.feet.midbottom):
                 y += overlap.height
                 y = self._old_position[1]
+                self.reset_inputs()
             elif overlap.collidepoint(self.feet.midright):
                 x -= overlap.width
                 x = self._old_position[0]
+                self.reset_inputs()
 
             self.position = (int(x), int(y))
             self.destination = self.position
