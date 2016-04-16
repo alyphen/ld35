@@ -1,14 +1,10 @@
 import pygame
-from pygame.locals import *
 
-from pytmx import *
 from pytmx.util_pygame import load_pygame
 import pyscroll
 from pyscroll import PyscrollGroup
 
-from tilemap import Tilemap
 import gameobjects
-from gameobjects import Player
 
 
 class Game:
