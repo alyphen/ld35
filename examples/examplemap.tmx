@@ -1,45 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="12">
-
- <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="2" columns="0">
-
-  <tile id="0">
-
-   <image width="32" height="32" source="../images/basetile.png"/>
-
-  </tile>
-
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="15">
+ <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="1" columns="0">
   <tile id="1">
-
-   <image width="32" height="32" source="../images/player.png"/>
-
+   <image width="32" height="32" source="placeholder_player.png"/>
   </tile>
-
  </tileset>
-
- <layer name="Tile Layer 1" width="100" height="100">
-
+ <tileset firstgid="4" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="15" columns="5">
+  <image source="placeholder_tiles.png" width="80" height="48"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="22" height="18">
   <data encoding="base64" compression="zlib">
-
-   eJzt0cEJAAAIxDDdf2lX8CUnJNAJWgXwSy/jhh9Z/MjiRxY/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACArQGWvwAz
-
+   eJzjYmBg4BrFdMO8QMxPIuYhwlxuIBYkEXOSYa4QjcyllXsHwlwhMs0lJmyp6V50+wYyfDmAmJVEzE6EuaOYuhgA/ogSHQ==
   </data>
-
  </layer>
-
  <objectgroup name="Object Layer 1">
-
-  <object id="5" name="Player" type="Player" gid="2" x="162" y="158.333" width="32" height="32"/>
-
-  <object id="6" type="Wall" x="384" y="91.6667" width="43" height="170"/>
-
-  <object id="9" type="Wall" x="22.1667" y="88" width="43" height="170"/>
-
-  <object id="10" type="Wall" x="42" y="59.3333" width="359.5" height="35.6667"/>
-
-  <object id="11" type="Wall" x="35.9167" y="256.5" width="359.5" height="35.6667"/>
-
+  <object id="5" name="Player" type="Player" gid="2" x="160" y="144" width="32" height="32"/>
+  <object id="9" type="Wall" x="64" y="64" width="16" height="160"/>
+  <object id="12" type="Wall" x="272" y="64" width="16" height="160"/>
+  <object id="13" type="Wall" x="64" y="64" width="224" height="16"/>
+  <object id="14" type="Wall" x="64" y="208" width="224" height="16"/>
  </objectgroup>
-
 </map>
