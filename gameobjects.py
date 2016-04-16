@@ -37,18 +37,21 @@ class Player(pygame.sprite.Sprite):
         player.id = tmx_object.id
 
         return player
-    def __init__(self, position, speed=200):
+    def __init__(self, position, movestep=32, speed=200):
         super(Player, self).__init__()
         self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.rect = self.image.get_rect()
-        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 10)
+        self.feet = pygame.Rect(0, 0, self.rect.width * 1.0, 10)
 
         self.reset_inputs()
 
+        self.movestep = movestep
         self.speed = speed
-        self.position = position
+        self.destination = self.position = position
         self._old_position = self.position
+
+        self.velocity = (0, 0)
 
     def reset_inputs(self):
         self.k_left = 0
@@ -62,13 +65,13 @@ class Player(pygame.sprite.Sprite):
         if not hasattr(event, 'key'): return
 
         if event.key == pygame.K_LEFT:
-            self.k_left = down * -self.speed
+            self.k_left = down * -1
         if event.key == pygame.K_RIGHT:
-            self.k_right = down * self.speed
+            self.k_right = down * 1
         if event.key == pygame.K_UP:
-            self.k_up = down * -self.speed
+            self.k_up = down * -1
         if event.key == pygame.K_DOWN:
-            self.k_down = down * self.speed
+            self.k_down = down * 1
 
 
     def update(self, d_t):
@@ -77,14 +80,34 @@ class Player(pygame.sprite.Sprite):
         d_t /= 1000.0
         x, y = self.position
 
-        d_x = d_t * (self.k_left + self.k_right)
-        d_y = d_t * (self.k_up + self.k_down)
-        self.d_pos = (d_x, d_y)
+        if self.velocity == (0, 0):
+            d_x = (self.k_left + self.k_right)
+
+            # only find d_y if there is no horizontal movement
+            d_y = 0
+            if d_x == 0:
+                d_y = (self.k_up + self.k_down)
+            self.velocity = (d_x, d_y)
+
+            self.destination = self.rect.x + d_x * self.movestep, self.rect.y + d_y * self.movestep
+
+        distance_x = abs(self.destination[0] - self.position[0])
+        distance_y = abs(self.destination[1] - self.position[1])
+
+        #print('distance: {0}, {1}, position: {2}, destination: {3}'.format(distance_x, distance_y, self.position, self.destination))
+
+        d_x = self.velocity[0] * min(d_t * self.speed, distance_x)
+        d_y = self.velocity[1] * min(d_t * self.speed, distance_y)
+
+        #print('d_x: {0},    d_y: {1}'.format(d_x, d_y))
 
         x += d_x
         y += d_y
+        self.position = (int(x), int(y))
 
-        self.position = (x, y)
+        if self.position == self.destination:
+            self.velocity = (0, 0)
+
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
@@ -116,7 +139,8 @@ class Player(pygame.sprite.Sprite):
                 x -= overlap.width
                 x = self._old_position[0]
 
-            self.position = (x, y)
+            self.position = (int(x), int(y))
+            self.destination = self.position
 
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
