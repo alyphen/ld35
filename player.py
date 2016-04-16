@@ -39,5 +39,5 @@ class Player(pygame.sprite.Sprite):
         self.position = (x, y)
         self.rect.center = self.position
 
-    def render(self, surface):
+    def draw(self, surface):
         surface.blit(self.image, self.rect)

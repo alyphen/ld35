@@ -17,7 +17,7 @@ class Tilemap(object):
     def update(self, d_t):
         pass
 
-    def render(self, surface):
+    def draw(self, surface):
         columns = self.width / self._sprite.rect.width
         rows = self.height / self._sprite.rect.height
 

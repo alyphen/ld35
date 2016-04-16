@@ -15,14 +15,14 @@ class Game:
         self.fps = 60
 
         self.updateables = []
-        self.renderables = []
+        self.drawables = []
 
     def add_game_object(self, game_object):
         if hasattr(game_object, 'update'):
             self.updateables.append(game_object)
 
-        if hasattr(game_object, 'render'):
-            self.renderables.append(game_object)
+        if hasattr(game_object, 'draw'):
+            self.drawables.append(game_object)
 
     def on_init(self):
         pygame.init()
@@ -50,9 +50,9 @@ class Game:
         for updateable in self.updateables:
             updateable.update(d_t)
 
-    def on_render(self):
-        for renderable in self.renderables:
-            renderable.render(self._display_surf)
+    def on_draw(self):
+        for drawable in self.drawables:
+            drawable.draw(self._display_surf)
 
         pygame.display.flip()
 
@@ -65,7 +65,7 @@ class Game:
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_loop()
-            self.on_render()
+            self.on_draw()
         self.on_cleanup()
 
 if __name__ == "__main__":
