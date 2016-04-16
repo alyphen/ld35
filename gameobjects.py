@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.rect = self.image.get_rect()
-        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 12)
+        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 10)
 
         self.reset_inputs()
 
