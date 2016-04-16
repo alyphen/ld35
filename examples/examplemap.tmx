@@ -8,10 +8,10 @@
    <image width="32" height="32" source="placeholder_player.png"/>
   </tile>
  </tileset>
- <tileset firstgid="3" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="28" columns="7">
-  <image source="placeholder_tiles.png" width="112" height="64"/>
+ <tileset firstgid="3" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="56" columns="7">
+  <image source="placeholder_tiles.png" width="112" height="128"/>
  </tileset>
- <tileset firstgid="31" name="collisiontest" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+ <tileset firstgid="59" name="collisiontest" tilewidth="16" tileheight="16" tilecount="4" columns="2">
   <image source="collisiontest.png" width="32" height="32"/>
   <tile id="0">
    <properties>
@@ -21,7 +21,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="22" height="18">
   <data encoding="base64" compression="zlib">
-   eJy9lNkKhDAMRQsu4zozLg8V/f/vNAWFcklq6vZwqLR6chshtTGmJqZtfRJ78ozLJuWVPG/cj6s/wdmX6CNpFXUboiBGYGH2HCVRKXrTBBzIvK2V4LLgxe/wGZG8mDeU0d0lITLGe9SHULbds9efL+TFOh0xRPTBel7Nv1sYr/+v/L4470/pc/yVffgQaSS5whszU0LzwyreeWOeSHua+XbHDFwBaxQVqA==
+   eJy9lNkKwjAQRQNu2FZF7UNKBVdcKm7g8v9/5g2kMEwnJSnah8NMJ+nN5LZMrJSKQWbjP9EN16TeXP26dNq4n3R+xtbGYBbIyOPcBOzBAaSEBclzUhuCyMObhGlcwJU8v0j+tDFyaGmmW76fq2qPEi5d3m9ao2fu0gE9sAW7AB+41hpsWH9mXwHODfotfT6CE6lPwTzAB010H4KPN3C3+RKsBF36ragvRncieGriG3xU9Z/z8WEAuoH0PXRDZkrd/NAee9qYJ66az3z7xQz8Ar8mF7o=
   </data>
  </layer>
  <objectgroup name="Object">
@@ -34,7 +34,7 @@
  </objectgroup>
  <layer name="Collision" width="22" height="18" visible="0" opacity="0.85">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF9ATyZGJizCXHLSPRXPQwHanmkusWWplLi3wxCqgLAKX6Bg8=
+   eJxjYBgF9ATWZGJizCXHLSPRXPQwHanmkusWWplLi3wxCqgLAHhpC4c=
   </data>
  </layer>
 </map>
