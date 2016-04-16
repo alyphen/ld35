@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         player.id = tmx_object.id
 
         return player
-    def __init__(self, position, speed=400):
+    def __init__(self, position, speed=200):
         super(Player, self).__init__()
         self.image = pygame.image.load("examples/placeholder_player.png")
 

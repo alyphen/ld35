@@ -43,7 +43,7 @@ class Game:
         tmx_data = load_pygame(self.filename)
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self._display_surf.get_size())
-        self.map_layer.zoom = 2
+        self.map_layer.zoom = 4
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
 
         # Find known object types and attach behavior
@@ -56,6 +56,8 @@ class Game:
 
                     if o.name == 'Player':
                         self.player = game_object
+
+        self.group.center(self.player.rect.center)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -77,9 +79,15 @@ class Game:
 
     def on_draw(self):
         #self._display_surf.fill((0, 0, 0))
-        self.group.center(self.player.rect.center)
-        self.group.draw(self._display_surf)
 
+        camera_smooth_factor = 10
+        c_pos = self.group.view.center
+        c_tgt = self.player.rect.center
+        distance_x = c_pos[0] + (c_tgt[0] - c_pos[0]) / camera_smooth_factor
+        distance_y = c_pos[1] + (c_tgt[1] - c_pos[1]) / camera_smooth_factor
+
+        self.group.center((distance_x, distance_y))
+        self.group.draw(self._display_surf)
 
         #for drawable in self.drawables:
         #    drawable.draw(self._display_surf, self.camera)
