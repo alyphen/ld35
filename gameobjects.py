@@ -60,6 +60,10 @@ class Player(pygame.sprite.Sprite):
 
         self.velocity = (0, 0)
 
+        self._snd_step_concrete = pygame.mixer.Sound("assets/step_concrete.wav")
+        self._snd_step_grass = pygame.mixer.Sound("assets/step_grass.wav")
+        self._snd_step_water = pygame.mixer.Sound("assets/step_water.wav")
+
     def build_animations(self):
         images = pyganim.getImagesFromSpriteSheet(
                             'examples/placeholder_player_ani.png',
@@ -86,7 +90,7 @@ class Player(pygame.sprite.Sprite):
 
         for k, v in self.animations.items():
             self.animations[k] = pyganim.PygAnimation(list(v))
-        
+
         self.animate('idle_up')
 
     def animate(self, name):
@@ -156,6 +160,10 @@ class Player(pygame.sprite.Sprite):
 
         d_x = self.velocity[0] * min(d_t * self.speed, distance_x)
         d_y = self.velocity[1] * min(d_t * self.speed, distance_y)
+
+        if d_x != 0 or d_y != 0:
+            if not pygame.mixer.get_busy():
+                self._snd_step_grass.play()
 
         # print('d_x: {0},    d_y: {1}'.format(d_x, d_y))
 
