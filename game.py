@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from tilemap import Tilemap
 from player import Player
+from camera_group import CameraGroup
 
 
 class Game:
@@ -11,11 +12,15 @@ class Game:
         self._display_surf = None
         self.size = self.width, self.height = 1280, 720
 
+        self.camera = pygame.Rect(0, 0, self.width, self.height)
+
         self._clock = pygame.time.Clock()
         self.fps = 60
 
         self.updateables = []
         self.drawables = []
+
+        self.players_group = CameraGroup()
 
     def add_game_object(self, game_object):
         if hasattr(game_object, 'update'):
@@ -30,11 +35,12 @@ class Game:
         self._running = True
 
         tile_sprite = pygame.image.load('images/basetile.png')
-        self.tilemap = Tilemap(tile_sprite, 1024, 720)
+        self.tilemap = Tilemap(tile_sprite, 5000, 1000)
         self.add_game_object(self.tilemap)
 
         self.player = Player((500, 500))
-        self.add_game_object(self.player)
+        self.players_group.add(self.player)
+        self.add_game_object(self.players_group)
 
     def on_event(self, event):
         if event.type == pygame.QUIT:
@@ -48,11 +54,15 @@ class Game:
     def on_loop(self):
         d_t = self._clock.tick(self.fps)
         for updateable in self.updateables:
+            # camera is given here to ensure Sprite Groups can pass it on to Sprites
             updateable.update(d_t)
+        self.camera.center = self.player.position
 
     def on_draw(self):
+        self._display_surf.fill((0, 0, 0))
+
         for drawable in self.drawables:
-            drawable.draw(self._display_surf)
+            drawable.draw(self._display_surf, self.camera)
 
         pygame.display.flip()
 

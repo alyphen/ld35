@@ -14,10 +14,7 @@ class Tilemap(object):
         self.height = height
         self.tiles = [[0 for x in range(width)] for y in range(height)]
 
-    def update(self, d_t):
-        pass
-
-    def draw(self, surface):
+    def draw(self, surface, camera):
         columns = self.width / self._sprite.rect.width
         rows = self.height / self._sprite.rect.height
 
@@ -25,6 +22,11 @@ class Tilemap(object):
             for r in range(rows):
                 self._sprite.rect.x = c * self._sprite.rect.w
                 self._sprite.rect.y = r * self._sprite.rect.h
-                surface.blit(self._sprite.image, self._sprite.rect)
+
+                if camera.colliderect(self._sprite.rect):
+                    draw_rect = self._sprite.rect
+                    draw_rect.x -= camera.x
+                    draw_rect.y -= camera.y
+                    surface.blit(self._sprite.image, self._sprite.rect)
 
 

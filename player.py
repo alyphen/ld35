@@ -1,7 +1,7 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, position):
+    def __init__(self, position, speed=400):
         super(Player, self).__init__()
         self.image = pygame.image.load("images/player.png")
 
@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.k_up = 0
         self.k_down = 0
 
-        self.speed = 100
+        self.speed = speed
         self.position = position
 
     def on_event(self, event):
@@ -38,6 +38,3 @@ class Player(pygame.sprite.Sprite):
 
         self.position = (x, y)
         self.rect.center = self.position
-
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
