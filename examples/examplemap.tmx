@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="15">
- <properties>
-  <property name="music" value="assets/ld35_02.ogg"/>
- </properties>
  <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="1" columns="0">
   <tile id="1">
    <image width="32" height="32" source="placeholder_player.png"/>
   </tile>
  </tileset>
- <tileset firstgid="4" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="15" columns="5">
-  <image source="placeholder_tiles.png" width="80" height="48"/>
+ <tileset firstgid="3" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="28" columns="7">
+  <image source="placeholder_tiles.png" width="112" height="64"/>
+ </tileset>
+ <tileset firstgid="31" name="collisiontest" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+  <image source="collisiontest.png" width="32" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="wall" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Tile Layer 1" width="22" height="18">
   <data encoding="base64" compression="zlib">
-   eJzjYmBg4BrFdMO8QMxPIuYhwlxuIBYkEXOSYa4QjcyllXsHwlwhMs0lJmyp6V50+wYyfDmAmJVEzE6EuaOYuhgA/ogSHQ==
+   eJy9lMkKwCAMRD2ULmoXSg9K/f/vbAQPEhKN0vbwUFwm4wgxSikD+DR+ievco7xxfjmdP95H1fdobwPORlZBXQvMwIUIxFpkAbQgG1vQwNxp1IyWQ7r4Hp5jOF3st+SReos0h5I3Kotev7U6NV2X6Ur+LhC6+V/luUTdvSHjQ5jDBAyNjALdlp5S6h9OcOaPfsKtSfrbGz3wARB7Fd4=
   </data>
  </layer>
- <objectgroup name="Object Layer 1">
+ <objectgroup name="Object">
   <object id="5" name="Player" type="Player" gid="2" x="160" y="144" width="32" height="32"/>
-  <object id="9" type="Wall" x="64" y="64" width="16" height="160"/>
-  <object id="12" type="Wall" x="272" y="64" width="16" height="160"/>
-  <object id="13" type="Wall" x="64" y="64" width="224" height="16"/>
-  <object id="14" type="Wall" x="64" y="208" width="224" height="16"/>
  </objectgroup>
+ <layer name="Collision" width="22" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF9ATyZGJizCXHLaPmjpo7WMylRb4YBdQFAI2oBVU=
+  </data>
+ </layer>
 </map>
