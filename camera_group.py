@@ -1,5 +1,6 @@
 import pygame
 
+
 class CameraGroup(pygame.sprite.Group):
     def __init__(self, *args, **kwargs):
         super(CameraGroup, self).__init__(*args, **kwargs)

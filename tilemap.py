@@ -1,8 +1,10 @@
 import pygame
 
+
 class Tileset(object):
     """Maintains images to be indexed and drawn by a tilemap."""
     pass
+
 
 class Tilemap(object):
     def __init__(self, image, width, height):
@@ -28,5 +30,3 @@ class Tilemap(object):
                     draw_rect.x -= camera.x
                     draw_rect.y -= camera.y
                     surface.blit(self._sprite.image, self._sprite.rect)
-
-

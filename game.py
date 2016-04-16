@@ -6,7 +6,6 @@ from pytmx.util_pygame import load_pygame
 import pyscroll
 from pyscroll import PyscrollGroup
 
-
 from tilemap import Tilemap
 import gameobjects
 from gameobjects import Player
@@ -65,8 +64,8 @@ class Game:
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = list()
-        destinations = {} # destinations by destination ID
-        waiting_teleports = {} # lists of teleports by destination ID
+        destinations = {}  # destinations by destination ID
+        waiting_teleports = {}  # lists of teleports by destination ID
         self.all_teleports = []
 
         # Find known object types and attach behavior
@@ -84,7 +83,9 @@ class Game:
                         if game_object.destination_id is not None:
                             # hook it up if we can
                             game_object.destination = destinations.get(game_object.destination_id, None)
-                            print('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id, game_object.destination_id, game_object.destination))
+                            print('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id,
+                                                                                         game_object.destination_id,
+                                                                                         game_object.destination))
 
                             # store it for later if not
                             teleports = waiting_teleports.get(game_object.destination_id, [])
@@ -103,14 +104,14 @@ class Game:
                 destinations[o.id] = dest
 
                 # Complete any teleports waiting for this destination
-                if waiting_teleports.has_key(o.id):
+                if o.id in waiting_teleports:
                     for t in waiting_teleports[o.id]:
                         t.destination = dest
                         print('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
             else:
                 print('Unrecognized object type: {0}'.format(o.type))
 
-        #for t in self.all_teleports:
+        # for t in self.all_teleports:
         #    self.teleport_group.add(t)
 
         self.group.center(self.player.rect.center)
@@ -137,7 +138,7 @@ class Game:
         # sprite must have a rect called feet, and move_back method,
         # otherwise this will fail
         # Can use a new group to hold all player sprites if needed
-        #for sprite in self.group.sprites():
+        # for sprite in self.group.sprites():
         collision_list = self.player.feet.collidelistall(self.walls)
         if len(collision_list) > 0:
             wall_list = [self.walls[i] for i in collision_list]
@@ -145,15 +146,15 @@ class Game:
 
     def on_collide(self):
         for sprite in self.group.sprites():
-            #collider = pygame.sprite.spritecollideany(sprite, self.teleport_group)
+            # collider = pygame.sprite.spritecollideany(sprite, self.teleport_group)
             teleport_rects = [x.rect for x in self.all_teleports]
             collision_list = sprite.rect.collidelistall(teleport_rects)
             if len(collision_list) > 0:
-                collider = self.all_teleports[collision_list[0]] # Just get the first index
+                collider = self.all_teleports[collision_list[0]]  # Just get the first index
                 collider.on_collision(sprite)
 
     def on_draw(self):
-        #self._display_surf.fill((0, 0, 0))
+        # self._display_surf.fill((0, 0, 0))
 
         camera_smooth_factor = 10
         c_pos = self.group.view.center
@@ -182,6 +183,7 @@ class Game:
             self.on_collide()
             self.on_draw()
         self.on_cleanup()
+
 
 if __name__ == "__main__":
     game = Game('examples/examplemap.tmx')

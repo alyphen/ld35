@@ -1,14 +1,15 @@
 import pygame
 
+
 class Teleport(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(self, tmx_object):
         r = pygame.Rect(
-                tmx_object.x,
-                tmx_object.y,
-                tmx_object.width,
-                tmx_object.height
-            )
+            tmx_object.x,
+            tmx_object.y,
+            tmx_object.width,
+            tmx_object.height
+        )
         teleport = Teleport(r)
         teleport.id = tmx_object.id
         teleport.destination_id = int(tmx_object.properties.get('destination'))
@@ -18,8 +19,8 @@ class Teleport(pygame.sprite.Sprite):
         super(Teleport, self).__init__()
         self.rect = rect
         self.image = pygame.image.load("examples/placeholder_player.png")
-        #self.rect = self.image.get_rect()
-        #self.rect.center = self.position
+        # self.rect = self.image.get_rect()
+        # self.rect.center = self.position
 
         self.destination = None
 
@@ -37,6 +38,7 @@ class Player(pygame.sprite.Sprite):
         player.id = tmx_object.id
 
         return player
+
     def __init__(self, position, movestep=32, speed=200):
         super(Player, self).__init__()
         self.image = pygame.image.load("examples/placeholder_player.png")
@@ -59,10 +61,10 @@ class Player(pygame.sprite.Sprite):
         self.k_up = 0
         self.k_down = 0
 
-
     def on_event(self, event):
         down = event.type == pygame.KEYDOWN
-        if not hasattr(event, 'key'): return
+        if not hasattr(event, 'key'):
+            return
 
         if event.key == pygame.K_LEFT:
             self.k_left = down * -1
@@ -72,7 +74,6 @@ class Player(pygame.sprite.Sprite):
             self.k_up = down * -1
         if event.key == pygame.K_DOWN:
             self.k_down = down * 1
-
 
     def update(self, d_t):
         self._old_position = self.position
@@ -94,12 +95,13 @@ class Player(pygame.sprite.Sprite):
         distance_x = abs(self.destination[0] - self.position[0])
         distance_y = abs(self.destination[1] - self.position[1])
 
-        #print('distance: {0}, {1}, position: {2}, destination: {3}'.format(distance_x, distance_y, self.position, self.destination))
+        # print('distance: {0}, {1}, position: {2}, destination: {3}'
+        # .format(distance_x, distance_y, self.position, self.destination))
 
         d_x = self.velocity[0] * min(d_t * self.speed, distance_x)
         d_y = self.velocity[1] * min(d_t * self.speed, distance_y)
 
-        #print('d_x: {0},    d_y: {1}'.format(d_x, d_y))
+        # print('d_x: {0},    d_y: {1}'.format(d_x, d_y))
 
         x += d_x
         y += d_y
@@ -114,7 +116,7 @@ class Player(pygame.sprite.Sprite):
     # This is used to move back from walls
     # Should really be more generic collision response
     def move_back(self, d_t, walls):
-        #self.position = self._old_position
+        # self.position = self._old_position
 
         for wall in walls:
             # find region
