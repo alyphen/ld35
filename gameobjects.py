@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.rect = self.image.get_rect()
-        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 8)
+        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 12)
 
         self.k_left = 0
         self.k_right = 0
@@ -44,8 +44,12 @@ class Player(pygame.sprite.Sprite):
         d_t /= 1000.0
         x, y = self.position
 
-        x += d_t * (self.k_left + self.k_right)
-        y += d_t * (self.k_up + self.k_down)
+        d_x = d_t * (self.k_left + self.k_right)
+        d_y = d_t * (self.k_up + self.k_down)
+        self.d_pos = (d_x, d_y)
+
+        x += d_x
+        y += d_y
 
         self.position = (x, y)
         self.rect.center = self.position
@@ -53,7 +57,34 @@ class Player(pygame.sprite.Sprite):
 
     # This is used to move back from walls
     # Should really be more generic collision response
-    def move_back(self, d_t):
-        self.position = self._old_position
+    def move_back(self, d_t, walls):
+        #self.position = self._old_position
+
+        for wall in walls:
+            # find region
+            overlap = self.rect.clip(wall)
+
+            # compensate for collidepoint not detecting edges
+            overlap.height += 1
+            overlap.width += 1
+
+            x, y = self.position
+
+            if overlap.collidepoint(self.feet.midtop):
+                y -= overlap.height
+                y = self._old_position[1]
+            elif overlap.collidepoint(self.feet.midleft):
+                x += overlap.width
+                x = self._old_position[0]
+            elif overlap.collidepoint(self.feet.midbottom):
+                y += overlap.height
+                y = self._old_position[1]
+            elif overlap.collidepoint(self.feet.midright):
+                x -= overlap.width
+                x = self._old_position[0]
+
+            self.position = (x, y)
+
         self.rect.center = self.position
         self.feet.midbottom = self.rect.midbottom
+

@@ -91,8 +91,10 @@ class Game:
         # sprite must have a rect called feet, and move_back method,
         # otherwise this will fail
         for sprite in self.group.sprites():
-            if sprite.feet.collidelist(self.walls) > -1:
-                sprite.move_back(d_t)
+            collision_list = sprite.feet.collidelistall(self.walls)
+            if len(collision_list) > 0:
+                wall_list = [self.walls[i] for i in collision_list]
+                sprite.move_back(d_t, wall_list)
 
     def on_draw(self):
         #self._display_surf.fill((0, 0, 0))
