@@ -2,13 +2,14 @@ import pygame
 from pygame.locals import *
 
 from tilemap import Tilemap
+from player import Player
 
 
 class Game:
     def __init__(self):
         self._running = True
         self._display_surf = None
-        self.size = self.weight, self.height = 1024, 720
+        self.size = self.width, self.height = 1280, 720
 
         self._clock = pygame.time.Clock()
         self.fps = 60
@@ -32,12 +33,17 @@ class Game:
         self.tilemap = Tilemap(tile_sprite, 1024, 720)
         self.add_game_object(self.tilemap)
 
+        self.player = Player((500, 500))
+        self.add_game_object(self.player)
+
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self._running = False
+
+        self.player.on_event(event)
 
     def on_loop(self):
         d_t = self._clock.tick(self.fps)
