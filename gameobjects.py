@@ -1,9 +1,16 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
+    @classmethod
+    def from_tmx(self, tmx_object):
+        player = Player((tmx_object.x, tmx_object.y))
+        #player.image = tmx_object.image
+        player.id = tmx_object.id
+
+        return player
     def __init__(self, position, speed=400):
         super(Player, self).__init__()
-        self.image = pygame.image.load("images/player.png")
+        self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.rect = self.image.get_rect()
 
