@@ -35,6 +35,13 @@ class Game:
         if hasattr(game_object, 'draw'):
             self.drawables.append(game_object)
 
+    def play_music(self, filename):
+        # Ideally we want to load new music when going into a new map.
+        # Note: pygame's fadeout is blocking so will have to do setvolume over many updates then load the new clip
+        self._musicfile = filename
+        pygame.mixer.music.load(self._musicfile)
+        pygame.mixer.music.play(-1)
+
     def on_init(self):
         pygame.init()
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -42,10 +49,18 @@ class Game:
 
         # Load map data
         tmx_data = load_pygame(self.filename)
+
+        pygame.mixer.init()
+        musicfile = tmx_data.properties.get('music')
+        if musicfile:
+            self.play_music(musicfile)
+
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self._display_surf.get_size())
         self.map_layer.zoom = 4
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        # really the group can be added as a gameobject
+
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = list()
@@ -106,10 +121,11 @@ class Game:
         distance_y = c_pos[1] + (c_tgt[1] - c_pos[1]) / camera_smooth_factor
 
         self.group.center((distance_x, distance_y))
+
         self.group.draw(self._display_surf)
 
-        #for drawable in self.drawables:
-        #    drawable.draw(self._display_surf, self.camera)
+        for drawable in self.drawables:
+            drawable.draw(self._display_surf, self.camera)
 
         pygame.display.flip()
 
