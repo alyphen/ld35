@@ -16,6 +16,9 @@ class Game:
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self._running = False
 
     def on_loop(self):
         pass
