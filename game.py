@@ -13,12 +13,12 @@ from gameobjects import Player
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, filename):
         self._running = True
         self._display_surf = None
         self.size = self.width, self.height = 1280, 720
 
-        self.filename = 'examples/examplemap.tmx'
+        self.filename = filename
 
         self.camera = pygame.Rect(0, 0, self.width, self.height)
 
@@ -40,11 +40,15 @@ class Game:
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
 
+        # Load map data
         tmx_data = load_pygame(self.filename)
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self._display_surf.get_size())
         self.map_layer.zoom = 4
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+
+        # setup level geometry with simple pygame rects, loaded from pytmx
+        self.walls = list()
 
         # Find known object types and attach behavior
         for o in tmx_data.objects:
@@ -56,6 +60,12 @@ class Game:
 
                     if o.name == 'Player':
                         self.player = game_object
+            elif o.type == 'Wall':
+                self.walls.append(pygame.Rect(
+                    o.x, o.y,
+                    o.width, o.height))
+            else:
+                print('Unrecognized object type: {0}'.format(o.type))
 
         self.group.center(self.player.rect.center)
 
@@ -71,11 +81,18 @@ class Game:
     def on_loop(self):
         d_t = self._clock.tick(self.fps)
         for updateable in self.updateables:
-            # camera is given here to ensure Sprite Groups can pass it on to Sprites
             updateable.update(d_t)
+
         self.camera.center = self.player.position
 
         self.group.update(d_t)
+
+        # check if the sprite's feet are colliding with wall
+        # sprite must have a rect called feet, and move_back method,
+        # otherwise this will fail
+        for sprite in self.group.sprites():
+            if sprite.feet.collidelist(self.walls) > -1:
+                sprite.move_back(d_t)
 
     def on_draw(self):
         #self._display_surf.fill((0, 0, 0))
@@ -107,5 +124,5 @@ class Game:
         self.on_cleanup()
 
 if __name__ == "__main__":
-    game = Game()
+    game = Game('examples/examplemap.tmx')
     game.on_execute()

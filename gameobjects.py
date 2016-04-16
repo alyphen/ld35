@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.image.load("examples/placeholder_player.png")
 
         self.rect = self.image.get_rect()
+        self.feet = pygame.Rect(0, 0, self.rect.width * .5, 8)
 
         self.k_left = 0
         self.k_right = 0
@@ -21,6 +22,7 @@ class Player(pygame.sprite.Sprite):
 
         self.speed = speed
         self.position = position
+        self._old_position = self.position
 
     def on_event(self, event):
         down = event.type == pygame.KEYDOWN
@@ -37,6 +39,8 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self, d_t):
+        self._old_position = self.position
+
         d_t /= 1000.0
         x, y = self.position
 
@@ -45,3 +49,11 @@ class Player(pygame.sprite.Sprite):
 
         self.position = (x, y)
         self.rect.center = self.position
+        self.feet.midbottom = self.rect.midbottom
+
+    # This is used to move back from walls
+    # Should really be more generic collision response
+    def move_back(self, d_t):
+        self.position = self._old_position
+        self.rect.center = self.position
+        self.feet.midbottom = self.rect.midbottom
