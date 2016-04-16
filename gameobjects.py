@@ -1,6 +1,8 @@
 import pygame
 import pyganim
 
+import logging
+logger = logging.getLogger()
 
 class Teleport(pygame.sprite.Sprite):
     @classmethod
@@ -87,12 +89,10 @@ class Player(pygame.sprite.Sprite):
         
         self.animate('idle_up')
 
-        print(self.animations)
-
     def animate(self, name):
         if name == 'idle':
             name = self.idle_transitions.get(self.active_anim, 'idle_down')
-            print('transition from {0} to {1}'.format(self.active_anim, name))
+            logger.debug('transition from {0} to {1}'.format(self.active_anim, name))
 
         self.animations[name].play()
         self.active_anim = name

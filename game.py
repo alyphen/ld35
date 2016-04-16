@@ -7,6 +7,8 @@ from pyscroll import PyscrollGroup
 
 import gameobjects
 
+import logging
+logger = logging.getLogger()
 
 class Game:
     def __init__(self, filename):
@@ -80,7 +82,7 @@ class Game:
                         if game_object.destination_id is not None:
                             # hook it up if we can
                             game_object.destination = destinations.get(game_object.destination_id, None)
-                            print('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id,
+                            logger.debug('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id,
                                                                                          game_object.destination_id,
                                                                                          game_object.destination))
 
@@ -104,9 +106,9 @@ class Game:
                 if o.id in waiting_teleports:
                     for t in waiting_teleports[o.id]:
                         t.destination = dest
-                        print('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
+                        logger.debug('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
             else:
-                print('Unrecognized object type: {0}'.format(o.type))
+                logger.error('Unrecognized object type: {0}'.format(o.type))
 
         # for t in self.all_teleports:
         #    self.teleport_group.add(t)
