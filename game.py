@@ -61,9 +61,13 @@ class Game:
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
         # really the group can be added as a gameobject
 
+        self.teleport_group = pygame.sprite.Group()
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = list()
+        destinations = {} # destinations by destination ID
+        waiting_teleports = {} # lists of teleports by destination ID
+        self.all_teleports = []
 
         # Find known object types and attach behavior
         for o in tmx_data.objects:
@@ -75,12 +79,39 @@ class Game:
 
                     if o.name == 'Player':
                         self.player = game_object
+
+                    if o.type == 'Teleport':
+                        if game_object.destination_id is not None:
+                            # hook it up if we can
+                            game_object.destination = destinations.get(game_object.destination_id, None)
+                            print('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id, game_object.destination_id, game_object.destination))
+
+                            # store it for later if not
+                            teleports = waiting_teleports.get(game_object.destination_id, [])
+                            teleports.append(game_object)
+                            waiting_teleports[game_object.destination_id] = teleports
+
+                            self.all_teleports.append(game_object)
+
             elif o.type == 'Wall':
                 self.walls.append(pygame.Rect(
                     o.x, o.y,
                     o.width, o.height))
+            elif o.type == 'TeleportDestination':
+                # save teleport destinations for Teleports read later
+                dest = Rect(o.x, o.y, o.width, o.height)
+                destinations[o.id] = dest
+
+                # Complete any teleports waiting for this destination
+                if waiting_teleports.has_key(o.id):
+                    for t in waiting_teleports[o.id]:
+                        t.destination = dest
+                        print('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
             else:
                 print('Unrecognized object type: {0}'.format(o.type))
+
+        #for t in self.all_teleports:
+        #    self.teleport_group.add(t)
 
         self.group.center(self.player.rect.center)
 
@@ -105,11 +136,21 @@ class Game:
         # check if the sprite's feet are colliding with wall
         # sprite must have a rect called feet, and move_back method,
         # otherwise this will fail
+        # Can use a new group to hold all player sprites if needed
+        #for sprite in self.group.sprites():
+        collision_list = self.player.feet.collidelistall(self.walls)
+        if len(collision_list) > 0:
+            wall_list = [self.walls[i] for i in collision_list]
+            self.player.move_back(d_t, wall_list)
+
+    def on_collide(self):
         for sprite in self.group.sprites():
-            collision_list = sprite.feet.collidelistall(self.walls)
+            #collider = pygame.sprite.spritecollideany(sprite, self.teleport_group)
+            teleport_rects = [x.rect for x in self.all_teleports]
+            collision_list = sprite.rect.collidelistall(teleport_rects)
             if len(collision_list) > 0:
-                wall_list = [self.walls[i] for i in collision_list]
-                sprite.move_back(d_t, wall_list)
+                collider = self.all_teleports[collision_list[0]] # Just get the first index
+                collider.on_collision(sprite)
 
     def on_draw(self):
         #self._display_surf.fill((0, 0, 0))
@@ -138,6 +179,7 @@ class Game:
             for event in pygame.event.get():
                 self.on_event(event)
             self.on_loop()
+            self.on_collide()
             self.on_draw()
         self.on_cleanup()
 

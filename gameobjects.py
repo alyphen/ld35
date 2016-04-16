@@ -1,10 +1,39 @@
 import pygame
 
+class Teleport(pygame.sprite.Sprite):
+    @classmethod
+    def from_tmx(self, tmx_object):
+        r = pygame.Rect(
+                tmx_object.x,
+                tmx_object.y,
+                tmx_object.width,
+                tmx_object.height
+            )
+        teleport = Teleport(r)
+        teleport.id = tmx_object.id
+        teleport.destination_id = int(tmx_object.properties.get('destination'))
+        return teleport
+
+    def __init__(self, rect):
+        super(Teleport, self).__init__()
+        self.rect = rect
+        self.image = pygame.image.load("examples/placeholder_player.png")
+        #self.rect = self.image.get_rect()
+        #self.rect.center = self.position
+
+        self.destination = None
+
+    def on_collision(self, other):
+        if hasattr(other, 'teleport_to'):
+            # send player to the destination
+            other.teleport_to(self.destination)
+
+
 class Player(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(self, tmx_object):
         player = Player((tmx_object.x, tmx_object.y))
-        #player.image = tmx_object.image
+        player.image = tmx_object.image
         player.id = tmx_object.id
 
         return player
@@ -15,14 +44,18 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.feet = pygame.Rect(0, 0, self.rect.width * .5, 12)
 
+        self.reset_inputs()
+
+        self.speed = speed
+        self.position = position
+        self._old_position = self.position
+
+    def reset_inputs(self):
         self.k_left = 0
         self.k_right = 0
         self.k_up = 0
         self.k_down = 0
 
-        self.speed = speed
-        self.position = position
-        self._old_position = self.position
 
     def on_event(self, event):
         down = event.type == pygame.KEYDOWN
@@ -52,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         y += d_y
 
         self.position = (x, y)
-        self.rect.center = self.position
+        self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
     # This is used to move back from walls
@@ -85,6 +118,13 @@ class Player(pygame.sprite.Sprite):
 
             self.position = (x, y)
 
-        self.rect.center = self.position
+        self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
+    def teleport_to(self, destination):
+        # move us to the new spot
+        self.rect.clamp_ip(destination)
+        self.position = self.rect.topleft
+
+        # and reset input
+        self.reset_inputs()
