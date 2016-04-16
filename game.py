@@ -1,4 +1,5 @@
 import pygame
+from pygame import Rect
 
 from pytmx.util_pygame import load_pygame
 import pyscroll
@@ -15,7 +16,7 @@ class Game:
 
         self.filename = filename
 
-        self.camera = pygame.Rect(0, 0, self.width, self.height)
+        self.camera = Rect(0, 0, self.width, self.height)
 
         self._clock = pygame.time.Clock()
         self.fps = 60
