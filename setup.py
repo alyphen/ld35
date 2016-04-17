@@ -12,6 +12,8 @@ setup(
     package_data = {'ld35': [
         'assets/*.ogg',
         'assets/*.wav',
+        'assets/*.png',
+        'assets/*.tmx',
         'examples/*.png',
         'examples/*.tmx',
     ]},
