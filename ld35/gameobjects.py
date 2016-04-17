@@ -253,6 +253,9 @@ class RisingPlatform(pygame.sprite.Sprite):
         elif self.height < self.floor * 32:
             self.height += 1
 
+    def on_collision(self, other):
+        pass
+
 
 class Switch(pygame.sprite.Sprite):
     @classmethod
@@ -279,6 +282,6 @@ class Switch(pygame.sprite.Sprite):
         self.active = False
 
     def on_collision(self, other):
-        if other.type == 'Player':
+        if isinstance(other, Player):
             self.active = True
             self.image = self.pressed_image

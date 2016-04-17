@@ -87,14 +87,17 @@ class Game:
                             self.all_teleports.append(game_object)
 
                     elif o.type == 'RisingPlatform':
-                        self.all_rising_platforms.append(
-                            Rect(
-                                o.x,
-                                o.y,
-                                o.width,
-                                o.height
-                            )
-                        )
+                        self.all_rising_platforms.append(game_object)
+#                        self.all_rising_platforms.append(
+#                            Rect(
+#                                o.x,
+#                                o.y,
+#                                o.width,
+#                                o.height
+#                            )
+#                        )
+                    elif o.type == 'Switch':
+                        self.all_rising_platforms.append(game_object)
 
             elif o.type == 'Wall':
                 self.walls.append(pygame.Rect(
