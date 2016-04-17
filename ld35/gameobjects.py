@@ -259,6 +259,9 @@ class RisingPlatform(pygame.sprite.Sprite):
         if isinstance(other, Player):
             self.floor = 1
 
+    def on_trigger(self, other):
+        self.floor = 1
+
 
 class Switch(pygame.sprite.Sprite):
     @classmethod
@@ -288,3 +291,6 @@ class Switch(pygame.sprite.Sprite):
         if isinstance(other, Player):
             self.active = True
             self.image = self.pressed_image
+
+            if hasattr(self, 'target') and hasattr(self.target, 'on_trigger'):
+                self.target.on_trigger(self)

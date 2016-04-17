@@ -63,9 +63,11 @@ class Game:
                 klass = getattr(gameobjects, o.type)
                 if hasattr(klass, 'from_tmx'):
                     game_object = klass.from_tmx(o)
-                    game_object.id = o.id
+                    game_object.id = int(o.id)
                     game_object.z = 0
                     game_object.h = 0
+                    if hasattr(o, 'target_id'):
+                        game_object.target_id = getattr(o, 'target_id')
                     self.group.add(game_object)
 
                     if o.name == 'Player':
@@ -101,25 +103,35 @@ class Game:
         self.trigger_targets[target.id] = target
 
         # Complete any triggers waiting for this target
+        logger.debug('waiting triggers: {0}'.format(self.waiting_triggers))
         if target.id in self.waiting_triggers:
             for trigger in self.waiting_triggers[target.id]:
                 trigger.target = target
                 logger.debug('Completing trigger {0} with target: {1}/{2}'.format(trigger.id, target.id, target))
+        else:
+            logger.debug('Failed to find triggers for target: {0}, {1}'.format(target.id, target))
 
     def add_trigger(self, game_object):
-        self.triggers.append(game_object)
+        if hasattr(game_object, 'target_id') and game_object.target_id is not None:
+            target_id = game_object.target_id
+            if target_id == 'self':
+                target_id = int(game_object.id)
+            else:
+                target_id = int(target_id)
 
-        if hasattr(game_object, 'target_id'):
             # hook it up if we can
-            game_object.target = self.trigger_targets.get(game_object.target_id, None)
+            game_object.target = self.trigger_targets.get(target_id, None)
             logger.debug('Adding trigger {0} with target: {1}/{2}'.format(game_object.id,
-                                                                            game_object.target_id,
+                                                                            target_id,
                                                                             game_object.target))
 
             # store it for later if not
-            t = waiting_triggers.get(game_object.target_id, [])
+            t = self.waiting_triggers.get(target_id, [])
             t.append(game_object)
-            self.waiting_triggers[game_object.target_id] = t
+            self.waiting_triggers[target_id] = t
+
+            self.triggers.append(game_object)
+
 
     def add_game_object(self, game_object):
         if hasattr(game_object, 'update'):
@@ -220,5 +232,7 @@ class Game:
 
 
 if __name__ == "__main__":
+    logging.basicConfig()
+    logger.setLevel(logging.DEBUG)
     game = Game(resources.get('examples/examplemap.tmx'))
     game.run()
