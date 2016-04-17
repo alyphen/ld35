@@ -5,6 +5,7 @@ from pytmx.util_pygame import load_pygame
 import pyscroll
 from pyscroll import PyscrollGroup
 
+import resources
 import gameobjects
 
 import logging
@@ -37,7 +38,7 @@ class Game:
         # Ideally we want to load new music when going into a new map.
         # Note: pygame's fadeout is blocking so will have to do setvolume over many updates then load the new clip
         self._musicfile = filename
-        pygame.mixer.music.load(self._musicfile)
+        pygame.mixer.music.load(resources.get(self._musicfile))
         pygame.mixer.music.play(-1)
 
     def on_init(self):
@@ -185,5 +186,5 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game('examples/examplemap.tmx')
+    game = Game(resources.get('examples/examplemap.tmx'))
     game.on_execute()
