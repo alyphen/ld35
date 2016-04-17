@@ -71,7 +71,7 @@ class Game:
                         self.player = game_object
                         self.player.h = 16
 
-                    if o.type == 'Teleport':
+                    elif o.type == 'Teleport':
                         if game_object.destination_id is not None:
                             # hook it up if we can
                             game_object.destination = destinations.get(game_object.destination_id, None)
@@ -85,6 +85,16 @@ class Game:
                             waiting_teleports[game_object.destination_id] = teleports
 
                             self.all_teleports.append(game_object)
+
+                    elif o.type == 'RisingPlatform':
+                        self.all_rising_platforms.append(
+                            Rect(
+                                o.x,
+                                o.y,
+                                o.width,
+                                o.height
+                            )
+                        )
 
             elif o.type == 'Wall':
                 self.walls.append(pygame.Rect(
@@ -100,15 +110,6 @@ class Game:
                     for t in waiting_teleports[o.id]:
                         t.destination = dest
                         logger.debug('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
-            elif o.type == 'RisingPlatform':
-                self.all_rising_platforms.append(
-                    Rect(
-                        o.x,
-                        o.y,
-                        o.width,
-                        o.height
-                    )
-                )
             else:
                 logger.error('Unrecognized object type: {0}'.format(o.type))
 
