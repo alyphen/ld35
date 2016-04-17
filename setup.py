@@ -5,7 +5,8 @@ setup(
     name = "ld35",
     version = "0.0.1.dev",
     url = "https://github.com/seventhroot/ld35",
-    package_dir = {'ld35': 'src/ld35'},
+    description = 'The SeventhRoot entry for Ludum Dare 35',
+    long_description_markdown_filename='README.md',
     packages = ['ld35'],
     package_data = {'ld35': [
         'assets/*.ogg',
@@ -13,6 +14,7 @@ setup(
         'examples/*.png',
         'examples/*.tmx',
     ]},
+    setup_requires=['setuptools-markdown'],
     install_requires = [
         'pygame==1.9.1',
         'Pyganim==0.9.2',
