@@ -233,16 +233,19 @@ class Player(pygame.sprite.Sprite):
 class RisingPlatform(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
-        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y))
+        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), tmx_object.risen)
         rising_platform.id = tmx_object.id
         return rising_platform
 
-    def __init__(self, position):
+    def __init__(self, position, floor=0):
         super(RisingPlatform, self).__init__()
         self.position = position
-
-    def on_event(self, event):
-        pass
+        self.floor = floor
+        self.height = floor * 32
+        self._player = None
 
     def update(self, d_t):
-        pass
+        if self.height > self.floor * 32:
+            self.height -= 1
+        elif self.height < self.floor * 32:
+            self.height += 1

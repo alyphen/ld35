@@ -10,6 +10,7 @@ import gameobjects
 import logging
 logger = logging.getLogger()
 
+
 class Game:
     def __init__(self, filename):
         self._running = True
@@ -26,21 +27,6 @@ class Game:
         self.updateables = []
         self.drawables = []
 
-    def add_game_object(self, game_object):
-        if hasattr(game_object, 'update'):
-            self.updateables.append(game_object)
-
-        if hasattr(game_object, 'draw'):
-            self.drawables.append(game_object)
-
-    def play_music(self, filename):
-        # Ideally we want to load new music when going into a new map.
-        # Note: pygame's fadeout is blocking so will have to do setvolume over many updates then load the new clip
-        self._musicfile = filename
-        pygame.mixer.music.load(self._musicfile)
-        pygame.mixer.music.play(-1)
-
-    def on_init(self):
         pygame.init()
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
@@ -66,6 +52,7 @@ class Game:
         destinations = {}  # destinations by destination ID
         waiting_teleports = {}  # lists of teleports by destination ID
         self.all_teleports = []
+        self.all_rising_platforms = []
 
         # Find known object types and attach behavior
         for o in tmx_data.objects:
@@ -83,8 +70,8 @@ class Game:
                             # hook it up if we can
                             game_object.destination = destinations.get(game_object.destination_id, None)
                             logger.debug('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id,
-                                                                                         game_object.destination_id,
-                                                                                         game_object.destination))
+                                                                                                game_object.destination_id,
+                                                                                                game_object.destination))
 
                             # store it for later if not
                             teleports = waiting_teleports.get(game_object.destination_id, [])
@@ -107,6 +94,15 @@ class Game:
                     for t in waiting_teleports[o.id]:
                         t.destination = dest
                         logger.debug('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
+            elif o.type == 'RisingPlatform':
+                self.all_rising_platforms.append(
+                    Rect(
+                        o.x,
+                        o.y,
+                        o.width,
+                        o.height
+                    )
+                )
             else:
                 logger.error('Unrecognized object type: {0}'.format(o.type))
 
@@ -115,12 +111,39 @@ class Game:
 
         self.group.center(self.player.rect.center)
 
+        self.camera_shakes = 0
+        self.camera_shake_dist = 0
+
+        while self._running:
+            for event in pygame.event.get():
+                self.on_event(event)
+            self.on_loop()
+            self.on_collide()
+            self.on_draw()
+        self.on_cleanup()
+
+    def add_game_object(self, game_object):
+        if hasattr(game_object, 'update'):
+            self.updateables.append(game_object)
+
+        if hasattr(game_object, 'draw'):
+            self.drawables.append(game_object)
+
+    def play_music(self, filename):
+        # Ideally we want to load new music when going into a new map.
+        # Note: pygame's fadeout is blocking so will have to do setvolume over many updates then load the new clip
+        self._musicfile = filename
+        pygame.mixer.music.load(self._musicfile)
+        pygame.mixer.music.play(-1)
+
     def on_event(self, event):
         if event.type == pygame.QUIT:
             self._running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 self._running = False
+            if event.key == pygame.K_SPACE:
+                self.camera_shake()
 
         self.player.on_event(event)
 
@@ -143,13 +166,25 @@ class Game:
             wall_list = [self.walls[i] for i in collision_list]
             self.player.move_back(d_t, wall_list)
 
+        # Camera shake
+        if self.camera_shakes > 0:
+            self.camera_shake_dist = -self.camera_shake_dist
+            self.camera_shakes -= 1
+        elif self.camera_shakes == 0 and self.camera_shake_dist != 0:
+            self.camera_shake_dist = 0
+
     def on_collide(self):
         for sprite in self.group.sprites():
             # collider = pygame.sprite.spritecollideany(sprite, self.teleport_group)
             teleport_rects = [x.rect for x in self.all_teleports]
-            collision_list = sprite.rect.collidelistall(teleport_rects)
-            if len(collision_list) > 0:
-                collider = self.all_teleports[collision_list[0]]  # Just get the first index
+            teleport_collision_list = sprite.rect.collidelistall(teleport_rects)
+            if len(teleport_collision_list) > 0:
+                collider = self.all_teleports[teleport_collision_list[0]]  # Just get the first index
+                collider.on_collision(sprite)
+            rising_platform_rects = [x.rect for x in self.all_rising_platforms]
+            rising_platform_collision_list = sprite.rect.collidelistall(rising_platform_rects)
+            if len(rising_platform_collision_list) > 0:
+                collider = self.all_rising_platforms[rising_platform_collision_list[0]]
                 collider.on_collision(sprite)
 
     def on_draw(self):
@@ -161,7 +196,7 @@ class Game:
         distance_x = c_pos[0] + (c_tgt[0] - c_pos[0]) / camera_smooth_factor
         distance_y = c_pos[1] + (c_tgt[1] - c_pos[1]) / camera_smooth_factor
 
-        self.group.center((distance_x, distance_y))
+        self.group.center((distance_x + self.camera_shake_dist, distance_y))
 
         self.group.draw(self._display_surf)
 
@@ -173,17 +208,10 @@ class Game:
     def on_cleanup(self):
         pygame.quit()
 
-    def on_execute(self):
-        self.on_init()
-        while self._running:
-            for event in pygame.event.get():
-                self.on_event(event)
-            self.on_loop()
-            self.on_collide()
-            self.on_draw()
-        self.on_cleanup()
+    def camera_shake(self, shakes=32, dist=4):
+        self.camera_shakes = shakes
+        self.camera_shake_dist = dist
 
 
 if __name__ == "__main__":
     game = Game('examples/examplemap.tmx')
-    game.on_execute()
