@@ -235,7 +235,7 @@ class Player(pygame.sprite.Sprite):
 class RisingPlatform(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
-        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), tmx_object.floor)
+        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
         rising_platform.id = tmx_object.id
         return rising_platform
 
@@ -253,8 +253,11 @@ class RisingPlatform(pygame.sprite.Sprite):
         elif self.height < self.floor * 32:
             self.height += 1
 
+        self.z = self.height
+
     def on_collision(self, other):
-        pass
+        if isinstance(other, Player):
+            self.floor = 1
 
 
 class Switch(pygame.sprite.Sprite):
