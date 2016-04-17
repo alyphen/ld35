@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 class Teleport(pygame.sprite.Sprite):
     @classmethod
-    def from_tmx(self, tmx_object):
+    def from_tmx(cls, tmx_object):
         r = pygame.Rect(
             tmx_object.x,
             tmx_object.y,
@@ -252,3 +252,33 @@ class RisingPlatform(pygame.sprite.Sprite):
             self.height -= 1
         elif self.height < self.floor * 32:
             self.height += 1
+
+
+class Switch(pygame.sprite.Sprite):
+    @classmethod
+    def from_tmx(cls, tmx_object):
+        rect = pygame.Rect(
+            tmx_object.x,
+            tmx_object.y,
+            tmx_object.width,
+            tmx_object.height
+        )
+        switch = Switch(rect)
+        switch.id = tmx_object.id
+        return switch
+
+    def __init__(self, rect):
+        super(Switch, self).__init__()
+        self.rect = rect
+        images = pyganim.getImagesFromSpriteSheet(
+            resources.get("assets/stonepad.png"),
+            rows=1, cols=2, rects=[])
+
+        self.image = images[0]
+        self.pressed_image = images[1]
+        self.active = False
+
+    def on_collision(self, other):
+        if other.type == 'Player':
+            self.active = True
+            self.image = self.pressed_image
