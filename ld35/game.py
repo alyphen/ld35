@@ -52,10 +52,10 @@ class Game:
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = list()
-        destinations = {}  # destinations by destination ID
-        waiting_teleports = {}  # lists of teleports by destination ID
-        self.all_teleports = []
-        self.all_rising_platforms = []
+
+        self.trigger_targets = {}  # targets by target ID
+        self.waiting_triggers = {} # lists of trigger targets by target ID
+        self.triggers = []
 
         # Find known object types and attach behavior
         for o in tmx_data.objects:
@@ -63,6 +63,7 @@ class Game:
                 klass = getattr(gameobjects, o.type)
                 if hasattr(klass, 'from_tmx'):
                     game_object = klass.from_tmx(o)
+                    game_object.id = o.id
                     game_object.z = 0
                     game_object.h = 0
                     self.group.add(game_object)
@@ -72,57 +73,53 @@ class Game:
                         self.player.h = 16
 
                     elif o.type == 'Teleport':
-                        if game_object.destination_id is not None:
-                            # hook it up if we can
-                            game_object.destination = destinations.get(game_object.destination_id, None)
-                            logger.debug('Adding teleport {0} with destination: {1}/{2}'.format(game_object.id,
-                                                                                                game_object.destination_id,
-                                                                                                game_object.destination))
-
-                            # store it for later if not
-                            teleports = waiting_teleports.get(game_object.destination_id, [])
-                            teleports.append(game_object)
-                            waiting_teleports[game_object.destination_id] = teleports
-
-                            self.all_teleports.append(game_object)
+                        self.add_trigger(game_object)
 
                     elif o.type == 'RisingPlatform':
-                        self.all_rising_platforms.append(game_object)
-#                        self.all_rising_platforms.append(
-#                            Rect(
-#                                o.x,
-#                                o.y,
-#                                o.width,
-#                                o.height
-#                            )
-#                        )
+                        self.add_trigger(game_object)
+
                     elif o.type == 'Switch':
-                        self.all_rising_platforms.append(game_object)
+                        self.add_trigger(game_object)
+
+
+                    self.save_trigger_target(game_object)
 
             elif o.type == 'Wall':
                 self.walls.append(pygame.Rect(
                     o.x, o.y,
                     o.width, o.height))
-            elif o.type == 'TeleportDestination':
-                # save teleport destinations for Teleports read later
-                dest = Rect(o.x, o.y, o.width, o.height)
-                destinations[o.id] = dest
-
-                # Complete any teleports waiting for this destination
-                if o.id in waiting_teleports:
-                    for t in waiting_teleports[o.id]:
-                        t.destination = dest
-                        logger.debug('Completing teleport {0} with destination: {1}/{2}'.format(t.id, o.id, dest))
             else:
                 logger.error('Unrecognized object type: {0}'.format(o.type))
-
-        # for t in self.all_teleports:
-        #    self.teleport_group.add(t)
 
         self.group.center(self.player.rect.center)
 
         self.camera_shakes = 0
         self.camera_shake_dist = 0
+
+    def save_trigger_target(self, target):
+        # Track all objects as possible trigger targets
+        self.trigger_targets[target.id] = target
+
+        # Complete any triggers waiting for this target
+        if target.id in self.waiting_triggers:
+            for trigger in self.waiting_triggers[target.id]:
+                trigger.target = target
+                logger.debug('Completing trigger {0} with target: {1}/{2}'.format(trigger.id, target.id, target))
+
+    def add_trigger(self, game_object):
+        self.triggers.append(game_object)
+
+        if hasattr(game_object, 'target_id'):
+            # hook it up if we can
+            game_object.target = self.trigger_targets.get(game_object.target_id, None)
+            logger.debug('Adding trigger {0} with target: {1}/{2}'.format(game_object.id,
+                                                                            game_object.target_id,
+                                                                            game_object.target))
+
+            # store it for later if not
+            t = waiting_triggers.get(game_object.target_id, [])
+            t.append(game_object)
+            self.waiting_triggers[game_object.target_id] = t
 
     def add_game_object(self, game_object):
         if hasattr(game_object, 'update'):
@@ -181,16 +178,10 @@ class Game:
 
     def on_collide(self):
         for sprite in self.group.sprites():
-            # collider = pygame.sprite.spritecollideany(sprite, self.teleport_group)
-            teleport_rects = [x.rect for x in self.all_teleports]
-            teleport_collision_list = sprite.rect.collidelistall(teleport_rects)
-            if len(teleport_collision_list) > 0:
-                collider = self.all_teleports[teleport_collision_list[0]]  # Just get the first index
-                collider.on_collision(sprite)
-            rising_platform_rects = [x.rect for x in self.all_rising_platforms]
-            rising_platform_collision_list = sprite.rect.collidelistall(rising_platform_rects)
-            if len(rising_platform_collision_list) > 0:
-                collider = self.all_rising_platforms[rising_platform_collision_list[0]]
+            trigger_rects = [x.rect for x in self.triggers]
+            trigger_collision_list = sprite.rect.collidelistall(trigger_rects)
+            if len(trigger_collision_list) > 0:
+                collider = self.triggers[trigger_collision_list[0]]  # Just get the first index
                 collider.on_collision(sprite)
 
     def on_draw(self):
