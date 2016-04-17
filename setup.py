@@ -3,9 +3,10 @@ from setuptools import setup
 
 setup(
     name = "ld35",
-    version = "0.0.1.dev",
+    version = "0.0.1.dev0",
     url = "https://github.com/seventhroot/ld35",
-    description = 'The SeventhRoot entry for Ludum Dare 35',
+    author = 'Seventh Root',
+    description = 'The Seventh Root entry for Ludum Dare 35',
     long_description_markdown_filename='README.md',
     packages = ['ld35'],
     package_data = {'ld35': [
