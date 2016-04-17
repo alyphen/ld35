@@ -45,7 +45,7 @@ class Game:
         map_data = pyscroll.data.TiledMapData(tmx_data)
         self.map_layer = pyscroll.BufferedRenderer(map_data, self._display_surf.get_size())
         self.map_layer.zoom = 4
-        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=1)
         # really the group can be added as a gameobject
 
         self.teleport_group = pygame.sprite.Group()
