@@ -3,7 +3,9 @@ from pygame import Rect
 
 from pytmx.util_pygame import load_pygame
 import pyscroll
-from pyscroll import PyscrollGroup
+
+#from pyscroll import PyscrollGroup
+from depthmixin import DepthOrderedScrollGroup as PyscrollGroup
 
 import resources
 import gameobjects
@@ -65,6 +67,7 @@ class Game:
 
                     if o.name == 'Player':
                         self.player = game_object
+                        self.player.z = 1
 
                     if o.type == 'Teleport':
                         if game_object.destination_id is not None:
