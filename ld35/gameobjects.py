@@ -282,6 +282,7 @@ class Switch(pygame.sprite.Sprite):
         images = pyganim.getImagesFromSpriteSheet(
             resources.get("assets/stonepad.png"),
             rows=1, cols=2, rects=[])
+        self._sound = pygame.mixer.Sound("assets/step_concrete.wav")
 
         self.image = images[0]
         self.pressed_image = images[1]
@@ -289,6 +290,8 @@ class Switch(pygame.sprite.Sprite):
 
     def on_collision(self, other):
         if isinstance(other, Player):
+            if not self.active:
+                self._sound.play()
             self.active = True
             self.image = self.pressed_image
 
