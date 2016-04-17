@@ -142,6 +142,10 @@ class Game:
                 self._running = False
             if event.key == pygame.K_SPACE:
                 self.camera_shake()
+            if event.key == pygame.K_EQUALS:
+                self.player.z += 1
+            if event.key == pygame.K_MINUS:
+                self.player.z -= 1
 
         self.player.on_event(event)
 
