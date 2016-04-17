@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="23">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="18" tilewidth="16" tileheight="16" nextobjectid="25">
  <properties>
   <property name="music" value="assets/ld35_02.ogg"/>
  </properties>
- <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="1" columns="0">
+ <tileset firstgid="1" name="basic" tilewidth="32" tileheight="32" tilecount="2" columns="0">
   <tile id="1">
    <image width="32" height="32" source="placeholder_player.png"/>
   </tile>
+  <tile id="2">
+   <image width="32" height="32" source="../assets/rising_platform.png"/>
+  </tile>
  </tileset>
- <tileset firstgid="3" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="56" columns="7">
+ <tileset firstgid="4" name="placeholder_tiles" tilewidth="16" tileheight="16" tilecount="56" columns="7">
   <image source="placeholder_tiles.png" width="112" height="128"/>
  </tileset>
- <tileset firstgid="59" name="collisiontest" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+ <tileset firstgid="60" name="collisiontest" tilewidth="16" tileheight="16" tilecount="4" columns="2">
   <image source="collisiontest.png" width="32" height="32"/>
   <tile id="0">
    <properties>
@@ -21,7 +24,7 @@
  </tileset>
  <layer name="Tile Layer 1" width="22" height="18">
   <data encoding="base64" compression="zlib">
-   eJy9lNkKwjAQRQNu2FZF7UNKBVdcKm7g8v9/5g2kMEwnJSnah8NMJ+nN5LZMrJSKQWbjP9EN16TeXP26dNq4n3R+xtbGYBbIyOPcBOzBAaSEBclzUhuCyMObhGlcwJU8v0j+tDFyaGmmW76fq2qPEi5d3m9ao2fu0gE9sAW7AB+41hpsWH9mXwHODfotfT6CE6lPwTzAB010H4KPN3C3+RKsBF36ragvRncieGriG3xU9Z/z8WEAuoH0PXRDZkrd/NAee9qYJ66az3z7xQz8Ar8mF7o=
+   eJy9lNkKwjAQRfPghm1V1D6kVHDFpeIGLv//Zd5ACsN0UpKifTjMdJLeTG7LxEqpGGQ2/hPdcE3qzdWvS6eN+0nnZ2xtDGaBjDzOTcAeHEBKWJA8J7UhiDy8SZjGBVzJ84vkTxsjh5ZmuuX7uar2KOHS5f2mNXrmLh3QA1uwC/CBa63BhvVn9hXg3KDf0ucjOJH6FMwDfNBE9yH4eAN3my/BStCl34r6YnQngqcmvsFHVf85Hx8GoBtI30M3ZKbUzQ/tsaeNeeKq+cy3X8zAL4upGUY=
   </data>
  </layer>
  <objectgroup name="Object">
@@ -31,10 +34,15 @@
   <object id="20" type="Wall" x="64" y="64" width="224" height="16"/>
   <object id="21" type="Wall" x="272" y="64" width="16" height="160"/>
   <object id="22" type="Wall" x="64" y="208" width="224" height="16"/>
+  <object id="23" type="RisingPlatform" x="128" y="144" width="32" height="32">
+   <properties>
+    <property name="floor" type="int" value="0"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="Collision" width="22" height="18" visible="0" opacity="0.85">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF9ATWZGJizCXHLSPRXPQwHanmkusWWplLi3wxCqgLAHhpC4c=
+   eJxjYBgF9AQ2ZGJizCXHLSPRXPQwHanmkusWWplLi3wxCqgLABI8C7k=
   </data>
  </layer>
 </map>

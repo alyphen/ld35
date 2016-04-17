@@ -233,7 +233,7 @@ class Player(pygame.sprite.Sprite):
 class RisingPlatform(pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
-        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), tmx_object.risen)
+        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), tmx_object.floor)
         rising_platform.id = tmx_object.id
         return rising_platform
 
@@ -242,7 +242,8 @@ class RisingPlatform(pygame.sprite.Sprite):
         self.position = position
         self.floor = floor
         self.height = floor * 32
-        self._player = None
+        self.rect = pygame.Rect(position, (32, 32))
+        self.image = pygame.image.load("assets/rising_platform.png")
 
     def update(self, d_t):
         if self.height > self.floor * 32:
