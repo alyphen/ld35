@@ -63,11 +63,13 @@ class Game:
                 klass = getattr(gameobjects, o.type)
                 if hasattr(klass, 'from_tmx'):
                     game_object = klass.from_tmx(o)
+                    game_object.z = 0
+                    game_object.h = 0
                     self.group.add(game_object)
 
                     if o.name == 'Player':
                         self.player = game_object
-                        self.player.z = 1
+                        self.player.h = 16
 
                     if o.type == 'Teleport':
                         if game_object.destination_id is not None:
