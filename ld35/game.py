@@ -115,14 +115,6 @@ class Game:
         self.camera_shakes = 0
         self.camera_shake_dist = 0
 
-        while self._running:
-            for event in pygame.event.get():
-                self.on_event(event)
-            self.on_loop()
-            self.on_collide()
-            self.on_draw()
-        self.on_cleanup()
-
     def add_game_object(self, game_object):
         if hasattr(game_object, 'update'):
             self.updateables.append(game_object)
@@ -213,6 +205,16 @@ class Game:
         self.camera_shakes = shakes
         self.camera_shake_dist = dist
 
+    def run(self):
+        while self._running:
+            for event in pygame.event.get():
+                self.on_event(event)
+            self.on_loop()
+            self.on_collide()
+            self.on_draw()
+        self.on_cleanup()
+
 
 if __name__ == "__main__":
     game = Game(resources.get('examples/examplemap.tmx'))
+    game.run()
