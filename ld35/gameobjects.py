@@ -1,6 +1,8 @@
 import pygame
 import pyganim
 
+import resources
+
 import logging
 
 logger = logging.getLogger()
@@ -62,13 +64,13 @@ class Player(pygame.sprite.Sprite):
 
         self.velocity = (0, 0)
 
-        self._snd_step_concrete = pygame.mixer.Sound("assets/step_concrete.wav")
-        self._snd_step_grass = pygame.mixer.Sound("assets/step_grass.wav")
-        self._snd_step_water = pygame.mixer.Sound("assets/step_water.wav")
+        self._snd_step_concrete = pygame.mixer.Sound(resources.get("assets/step_concrete.wav"))
+        self._snd_step_grass = pygame.mixer.Sound(resources.get("assets/step_grass.wav"))
+        self._snd_step_water = pygame.mixer.Sound(resources.get("assets/step_water.wav"))
 
     def build_animations(self):
         images = pyganim.getImagesFromSpriteSheet(
-            'examples/placeholder_player_ani.png',
+            resources.get('examples/placeholder_player_ani.png'),
             rows=4, cols=3, rects=[])
 
         self.animations = {
@@ -243,7 +245,7 @@ class RisingPlatform(pygame.sprite.Sprite):
         self.floor = floor
         self.height = floor * 32
         self.rect = pygame.Rect(position, (32, 32))
-        self.image = pygame.image.load("assets/rising_platform.png")
+        self.image = pygame.image.load(resources.get("assets/rising_platform.png"))
 
     def update(self, d_t):
         if self.height > self.floor * 32:
