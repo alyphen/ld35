@@ -506,7 +506,7 @@ class Keystone(pygame.sprite.Sprite):
         self.rect = rect
         self.images = pyganim.getImagesFromSpriteSheet(resources.get('examples/keystone.png'),
             rows=1, cols=5, rects=[])
-        self.animation = pyganim.PygAnimation(zip([image for image in self.images], [200] * len(self.images)))
+        self.animation = pyganim.PygAnimation(zip([self.images[x] for x in [0, 1, 2, 3, 4, 3, 2, 1]], [200] * 8))
         self.animate()
         self.image = self.images[0]
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="42">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="32" tilewidth="16" tileheight="16" nextobjectid="40">
  <properties>
   <property name="music" value="assets/ld35_02.ogg"/>
  </properties>
@@ -9,7 +9,7 @@
  <tileset firstgid="131" name="collision" tilewidth="16" tileheight="16" tilecount="4" columns="2">
   <image source="collisiontest.png" width="32" height="32"/>
  </tileset>
- <layer name="Floor 0 base" width="32" height="32">
+ <layer name="Tile Layer 1" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJzNlssSgjAMRfuDbGGnqBufGx+sfPy66WjGTiZpk9YCizMDlJYmN7mlcc41E9MDq8y5a2BTMO7ZA4fvdRcQvnMX5h6BU2Tt1Dilc/IexuBf37do+ojswbL+FbgxmnqG4DpVE63wPLa+5wm8FPFqa2IBLJn1tdr8o34kHX2OzsAloWWI1EMxuDxrofmLwcXCMRi+nwOtPY1/xeaXxhGrVap17z61QuvOGkMuWCu0P6we7NkCO2EM48T70BeQzqCFFoyJ9kToO1OcGRZo7lKx0nspp1yvcxqW+ElNOG9M+Rd61pia55zV0txalHh0Da/Sni0e6lWSD8X8aQ6g1hYP1OrG1Zolx5b66N3Pr3L8HPcq6ZXqm7n6lSaXlv8vD/XAOZ1lkn64Z623tcb3a/MGYLZERw==
   </data>
@@ -17,27 +17,17 @@
  <objectgroup name="Object Layer 1">
   <object id="1" type="Switch" x="96" y="304" width="16" height="16">
    <properties>
-    <property name="floor" type="int" value="0"/>
     <property name="target_id" type="int" value="4"/>
    </properties>
   </object>
   <object id="2" type="Switch" x="400" y="208" width="16" height="16">
    <properties>
-    <property name="floor" type="int" value="0"/>
     <property name="target_id" type="int" value="5"/>
    </properties>
   </object>
   <object id="3" name="Player" type="Player" x="240" y="480" width="32" height="32"/>
-  <object id="10" type="Wall" x="0" y="16" width="192" height="32">
-   <properties>
-    <property name="floor" type="int" value="0"/>
-   </properties>
-  </object>
-  <object id="13" type="Wall" x="0" y="16" width="32" height="496">
-   <properties>
-    <property name="floor" type="int" value="0"/>
-   </properties>
-  </object>
+  <object id="10" type="Wall" x="0" y="16" width="192" height="32"/>
+  <object id="13" type="Wall" x="0" y="16" width="32" height="496"/>
   <object id="14" type="Wall" x="0" y="176" width="64" height="32"/>
   <object id="15" type="Wall" x="96" y="176" width="64" height="32"/>
   <object id="18" type="Wall" x="128" y="144" width="32" height="96"/>
@@ -45,11 +35,7 @@
   <object id="20" type="Wall" x="320" y="144" width="32" height="64"/>
   <object id="21" type="Wall" x="320" y="176" width="192" height="32"/>
   <object id="22" type="Wall" x="480" y="16" width="32" height="496"/>
-  <object id="23" type="Wall" x="320" y="16" width="192" height="32">
-   <properties>
-    <property name="floor" type="int" value="0"/>
-   </properties>
-  </object>
+  <object id="23" type="Wall" x="320" y="16" width="192" height="32"/>
   <object id="24" type="Wall" x="416" y="176" width="32" height="112"/>
   <object id="25" type="Wall" x="352" y="256" width="96" height="32"/>
   <object id="26" type="Wall" x="352" y="256" width="32" height="144"/>
@@ -62,23 +48,19 @@
   <object id="34" type="Wall" x="224" y="336" width="64" height="80"/>
   <object id="36" type="Wall" x="0" y="480" width="192" height="32"/>
   <object id="37" type="Wall" x="320" y="480" width="192" height="32"/>
+  <object id="39" type="Keystone" x="240" y="240" width="32" height="32"/>
  </objectgroup>
  <layer name="Collision" width="32" height="32" visible="0">
   <data encoding="base64" compression="zlib">
    eJztlFsKACAIBL17F+8/EB+JbumCnzsDlRHVZhknmofiz874x/+CP2tPq/1nz3s/Uf9btl/iafleDqqf46D7ve/Ly0X1c4nqdfNL/e5+7V7/7r/tW+cXf1bQ/NZzjuZW+Te9UOVB
   </data>
  </layer>
- <layer name="Floor 0 walls" width="32" height="32">
+ <layer name="Tile Layer 2" width="32" height="32">
   <data encoding="base64" compression="zlib">
    eJztV8FSAjEM7SoXRL2AKxcEuYGe1aN4VP7/e0yGZuaRSdqUYTnRmTedndnmNUlf2nQppRvCbWAepfroGu1NCDPCivBamdcB/mXAFmNKmBOeCC+ELeGtMr8H+DcBW4wF8M8Dds89hPfKf+Uv8YueBeeqE1H+lvogun5s5L/Le8d9d9mXcYrXB9G12CvFaAz8s7x3rG/LdFynosOrf1PgkW+sf7x3rG+bdFynMC6lvHv1bwE82xSvf+wPxoXPwz3hwZhLedc80fPH/mBc+P+e8EH4zPgiPFfsnMpv2WF/vwm7jJ908N/LE563Gr+V35Fa1xv82n/RLZ7DtbJj8aPevXXs/y/hL2Nv+I/nWs6hzqPFj+8Bb12f/ZVzJ99WfL1R4q/pYZUO+hVeq34MxS/6Zv2K/1b9GIof/7Pifkl+8d/Sj9bbEPyW/6i70nt5KP+9+6SFH+9P7w7l+J6iuxp/pH/AmaHv7Uif4vFH+gecdV+i76tW/ksN/f6qvSv1+8wb0f5T9BnNNyPaf0qPWbPL9qL5buk/pces2WV7/yZ3NSs=
   </data>
  </layer>
- <layer name="Floor 0 grass" width="32" height="32">
-  <data encoding="base64" compression="zlib">
-   eJzt1+sKwCAIQGFbe/9n3mIIMlo5CiI5H0T/pDK7JBE57pYd/Sl9aXI8AOtoPWuLWtdl7HbcZd55MF5rjXbVOt93zHtUNk9/9lstv+QV8NH6wRh7dtXuG8TSe1e+32dfvP9PPC6j/ADx
-  </data>
- </layer>
- <objectgroup name="Triggers">
+ <objectgroup name="Object Layer 2">
   <object id="4" type="RisingPlatform" x="64" y="176" width="32" height="32">
    <properties>
     <property name="floor" type="int" value="1"/>
@@ -93,23 +75,6 @@
    <properties>
     <property name="floor" type="int" value="0"/>
     <property name="target_id" value="self"/>
-   </properties>
-  </object>
- </objectgroup>
- <objectgroup name="Floor 1 wall rects">
-  <object id="39" type="Wall" x="320" y="-16" width="192" height="32">
-   <properties>
-    <property name="floor" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="40" type="Wall" x="288" y="-16" width="48" height="80">
-   <properties>
-    <property name="floor" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="41" type="Wall" x="320" y="48" width="96" height="32">
-   <properties>
-    <property name="floor" type="int" value="1"/>
    </properties>
   </object>
  </objectgroup>
