@@ -15,8 +15,16 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object id="1" type="Switch" x="96" y="304" width="16" height="16"/>
-  <object id="2" type="Switch" x="400" y="208" width="16" height="16"/>
+  <object id="1" type="Switch" x="96" y="304" width="16" height="16">
+   <properties>
+    <property name="target_id" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="2" type="Switch" x="400" y="208" width="16" height="16">
+   <properties>
+    <property name="target_id" type="int" value="5"/>
+   </properties>
+  </object>
   <object id="3" name="Player" type="Player" x="240" y="480" width="32" height="32"/>
   <object id="4" type="RisingPlatform" x="64" y="176" width="32" height="32">
    <properties>
