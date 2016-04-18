@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="34" height="36" tilewidth="16" tileheight="16" nextobjectid="86">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="34" height="36" tilewidth="16" tileheight="16" nextobjectid="88">
  <properties>
   <property name="music" value="assets/ld35_02.ogg"/>
  </properties>
@@ -27,7 +27,7 @@
    eJztV01PwzAMDdDL+Lp0lF3GYLcNzsAROML+/++ZrcWSZezYbcnGoZaeokit8+w4L3FK/8fOAOeAi8DYVPR3BZgDHgFPzrgO8FgFfCFawIL9dwd4AGwBz874EuCxCfhCLBUei3R8k+tOPCYeY3iQHhD+Smf68uijL6QLtwN5XKZDLDwOzAPGNktxfSFdIH+lnM0UHvMcC9fLVdJ1zzNLT1u2Ds01PcVYuF5ukq57pfujSbaeLtk6W8WvVx8YH88T1ss14EYZS3Xh1aXHA+PjecLvO8Ar4C3jHXDv+BnLQ/OH8X8APjO+0iEf1v5ZdVmaa/vfiO87hYfMB513Xq9r4afEg+uF9T/m4xvwk7FLv/PB65/qVe6vlx/SC+v/LsdP9UnzPvs9tl5IH1q2vqY/tXmQPuD5p3xo+lObB/9O249T8KB8aOdNntOaPLR88PNaet/Xzod1Xw3hwe9t6+7GvA85r1EekT6Ijwj5Xoj0Wx6PSB/ER9lfyXtxKI9jmVUP3vtXvhsti/bZ8lxH6wER7bOpl/b8cn/ReujTZ1Mv7fmN+JvsdLYHMlI1Kw==
   </data>
  </layer>
- <objectgroup name="Floor 0 objects">
+ <objectgroup name="Floor 0 objects" visible="0">
   <object id="1" type="Switch" x="112" y="320" width="16" height="16">
    <properties>
     <property name="target_id" type="int" value="4"/>
@@ -48,7 +48,7 @@
   <object id="20" type="Wall" x="336" y="160" width="32" height="64"/>
   <object id="21" type="Wall" x="336" y="192" width="192" height="32"/>
   <object id="22" type="Wall" x="496" y="32" width="32" height="496"/>
-  <object id="23" type="Wall" x="336" y="32" width="192" height="32"/>
+  <object id="23" type="Wall" x="336" y="32" width="80" height="32"/>
   <object id="24" type="Wall" x="432" y="192" width="32" height="112"/>
   <object id="25" type="Wall" x="368" y="272" width="96" height="32"/>
   <object id="26" type="Wall" x="368" y="272" width="32" height="144"/>
@@ -86,6 +86,7 @@
     <property name="floor" type="int" value="0"/>
    </properties>
   </object>
+  <object id="87" type="Wall" x="400" y="32" width="128" height="16"/>
  </objectgroup>
  <objectgroup name="Platforms">
   <object id="4" type="RisingPlatform" x="80" y="192" width="32" height="32">
@@ -106,137 +107,137 @@
   </object>
  </objectgroup>
  <objectgroup name="Floor 1 objects">
-  <object id="40" type="Wall" x="0" y="32" width="544" height="16">
+  <object id="40" type="Wall" x="0" y="16" width="544" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="41" type="Wall" x="0" y="32" width="16" height="544">
+  <object id="41" type="Wall" x="0" y="16" width="16" height="544">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="43" type="Wall" x="0" y="560" width="544" height="16">
+  <object id="43" type="Wall" x="0" y="544" width="544" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="44" type="Wall" x="528" y="32" width="16" height="544">
+  <object id="44" type="Wall" x="528" y="16" width="16" height="544">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="46" type="Wall" x="48" y="80" width="96" height="112">
+  <object id="46" type="Wall" x="48" y="64" width="96" height="112">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="47" type="Wall" x="144" y="80" width="272" height="96">
+  <object id="47" type="Wall" x="144" y="64" width="288" height="96">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="51" type="Wall" x="368" y="144" width="128" height="64">
+  <object id="51" type="Wall" x="368" y="96" width="128" height="96">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="55" type="Wall" x="48" y="256" width="96" height="48">
+  <object id="55" type="Wall" x="48" y="240" width="96" height="48">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="56" type="Wall" x="48" y="304" width="32" height="208">
+  <object id="56" type="Wall" x="48" y="288" width="32" height="208">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="57" type="Wall" x="80" y="480" width="416" height="32">
+  <object id="57" type="Wall" x="80" y="464" width="416" height="32">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="58" type="Wall" x="400" y="336" width="96" height="144">
+  <object id="58" type="Wall" x="400" y="320" width="96" height="144">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="59" type="Wall" x="464" y="240" width="32" height="96">
+  <object id="59" type="Wall" x="464" y="224" width="32" height="96">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="60" type="Wall" x="368" y="432" width="32" height="48">
+  <object id="60" type="Wall" x="368" y="416" width="32" height="48">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="61" type="Wall" x="304" y="368" width="32" height="112">
+  <object id="61" type="Wall" x="304" y="352" width="32" height="112">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="62" type="Wall" x="336" y="240" width="32" height="160">
+  <object id="62" type="Wall" x="336" y="224" width="32" height="160">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="64" type="Wall" x="368" y="240" width="64" height="48">
+  <object id="64" type="Wall" x="368" y="224" width="64" height="48">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="65" type="Wall" x="176" y="208" width="160" height="32">
+  <object id="65" type="Wall" x="176" y="192" width="160" height="32">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="67" type="Wall" x="176" y="240" width="32" height="96">
+  <object id="67" type="Wall" x="176" y="224" width="32" height="96">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="68" type="Wall" x="112" y="336" width="96" height="112">
+  <object id="68" type="Wall" x="112" y="320" width="96" height="112">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="69" type="Wall" x="208" y="368" width="32" height="80">
+  <object id="69" type="Wall" x="208" y="352" width="32" height="80">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="70" type="Wall" x="16" y="544" width="192" height="16">
+  <object id="70" type="Wall" x="16" y="528" width="192" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="71" type="Wall" x="336" y="544" width="192" height="16">
+  <object id="71" type="Wall" x="336" y="528" width="192" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="72" type="Wall" x="208" y="512" width="128" height="48">
+  <object id="72" type="Wall" x="208" y="496" width="128" height="48">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="73" type="Wall" x="208" y="48" width="128" height="32">
+  <object id="73" type="Wall" x="208" y="32" width="128" height="32">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="74" type="Wall" x="480" y="80" width="16" height="64">
+  <object id="74" type="Wall" x="464" y="64" width="32" height="80">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="76" type="Wall" x="48" y="192" width="32" height="16">
+  <object id="76" type="Wall" x="48" y="176" width="32" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="77" type="Wall" x="112" y="192" width="32" height="16">
+  <object id="77" type="Wall" x="112" y="176" width="32" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>

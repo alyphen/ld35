@@ -105,10 +105,12 @@ class Player(pygame.sprite.Sprite):
     @z.setter
     def z(self, value):
         floor = self.floor
+        layer = self.layer
 
         self._z = value
 
         if floor != self.floor:
+            logger.debug('floor change {0} to {1}, {2} to {3}'.format(floor, self.floor, layer, self.layer))
             self.on_floor_change()
 
     @property
@@ -120,7 +122,7 @@ class Player(pygame.sprite.Sprite):
         # this resets z to be on the floor.
         # perhaps it should instead map z into the floor
         # e.g. if z = 36 (on floor 1) map it to z = 4 (on floor 0)
-        self.z = value * 32
+        self.z = self.z % 32 + value * 32
 
     @property
     def layer(self):
@@ -208,7 +210,7 @@ class Player(pygame.sprite.Sprite):
     def animate(self, name):
         if name == 'idle':
             name = self.idle_transitions.get(self.active_anim, 'idle_down')
-            logger.debug('transition from {0} to {1}'.format(self.active_anim, name))
+            #logger.debug('transition from {0} to {1}'.format(self.active_anim, name))
 
         self.animations[name].play()
         self.active_anim = name
@@ -393,16 +395,40 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
         for game_object in self.active_collisions:
             game_object.z = self.z
 
+#    def on_collision(self, other):
+#        if other is self:
+#            return
+#
+#        hitbox = self.rect.inflate(-self.rect.width / 2, -self.rect.height / 2)
+#
+#        track = True
+#        # find new collisions and do on_enter
+#        # if on_enter returns False then do not track the other
+#        if hasattr(self, 'on_enter') and other not in self.active_collisions and :
+#            track = self.on_enter(other)
+#
+#        if track is None:
+#            track = True
+#
+#        # track this collision for on_enter/on_exit
+#        if track:
+#            self.collisions_last_frame.add(other)
+#            self.active_collisions.add(other)
+
+
 
     def on_enter(self, other):
         if not isinstance(other, Player):
             return
-        logger.info('{other} entered {self}'.format(other=other, self=self))
-        logger.info('\t\t{0}, {1} =?= {2}'.format(self.stopped, self.floor, other.floor))
         if not self.stopped or self.floor != other.floor:
-            logger.info('\t\tmove_back()!  removing from active collisions')
             other.move_back([self.rect])
             return False # Explicitly do not track this object.  (Prevents on_trigger)
+
+        hitbox = self.rect.inflate(-self.rect.width / 2, -self.rect.height / 2)
+        if not hitbox.collidepoint(other.rect.center):
+            return False
+
+        logger.info('{other} entered {self}'.format(other=other, self=self))
 
         if hasattr(self, 'target') and hasattr(self.target, 'on_trigger'):
             self.target.on_trigger(self)
