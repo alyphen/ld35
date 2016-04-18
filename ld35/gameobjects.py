@@ -8,7 +8,40 @@ import logging
 logger = logging.getLogger()
 
 
-class Teleport(pygame.sprite.Sprite):
+class TriggerMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(TriggerMixin, self).__init__(*args, **kwargs)
+
+        self.collisions_last_frame = set()
+        self.active_collisions = set()
+
+    def update(self, *args, **kwargs):
+        super(TriggerMixin, self).update(*args, **kwargs)
+
+        # find collisions not in last frame and do on_exit
+        exiting = self.active_collisions - self.collisions_last_frame
+        for c in exiting:
+            if hasattr(self, 'on_exit'):
+                self.on_exit(c)
+            self.active_collisions.remove(c)
+
+        # reset detection for this frame
+        self.collisions_last_frame.clear()
+
+    def on_collision(self, other):
+        if other is self or other.z != self.z:
+            return
+
+        # find new collisions and do on_enter
+        if hasattr(self, 'on_enter') and other not in self.active_collisions:
+            self.on_enter(other)
+
+        # track this collision for on_enter/on_exit
+        self.collisions_last_frame.add(other)
+        self.active_collisions.add(other)
+
+
+class Teleport(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
         r = pygame.Rect(
@@ -31,7 +64,7 @@ class Teleport(pygame.sprite.Sprite):
 
         self.destination = None
 
-    def on_collision(self, other):
+    def on_enter(self, other):
         if hasattr(other, 'teleport_to'):
             # send player to the destination
             other.teleport_to(self.destination)
@@ -236,46 +269,14 @@ class Player(pygame.sprite.Sprite):
         # and reset input
         self.reset_inputs()
 
-class TriggerMixin(object):
-    def __init__(self, *args, **kwargs):
-        super(TriggerMixin, self).__init__(*args, **kwargs)
-
-        self.collisions_last_frame = set()
-        self.active_collisions = set()
-
-    def update(self, *args, **kwargs):
-        super(TriggerMixin, self).update(*args, **kwargs)
-
-        # find collisions not in last frame and do on_exit
-        exiting = self.active_collisions - self.collisions_last_frame
-        for c in exiting:
-            if hasattr(self, 'on_exit'):
-                self.on_exit(c)
-            self.active_collisions.remove(c)
-
-        # reset detection for this frame
-        self.collisions_last_frame.clear()
-
-    def on_collision(self, other):
-        if other is self:
-            return
-
-        # find new collisions and do on_enter
-        if hasattr(self, 'on_enter') and other not in self.active_collisions:
-            self.on_enter(other)
-
-        # track this collision for on_enter/on_exit
-        self.collisions_last_frame.add(other)
-        self.active_collisions.add(other)
-
 
 
 class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
-        rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
-        rising_platform.id = tmx_object.id
-        return rising_platform
+        platform = RisingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
+        platform.id = tmx_object.id
+        return platform
 
     def __init__(self, position, floor=0):
         super(RisingPlatform, self).__init__()
@@ -307,6 +308,11 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
 
         self.z = self.height
 
+        # anything touching (contained? half contained?) the platform should be moved as well
+        for game_object in self.active_collisions:
+            game_object.z = self.z
+
+
     def on_enter(self, other):
         logger.info('{other} entered {self}'.format(other=other, self=self))
         logger.info('\t\t{0}, {1} =?= {2}'.format(self.stopped, self.z, other.z))
@@ -319,10 +325,11 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
             if self.stopped and self.floor == 0:
                 self.floor = 1
 
-
     def on_exit(self, other):
         logger.info('{other} exited {self}'.format(other=other, self=self))
-        pass
+        if not self.stopped:
+            # Prevent the player from leaving the platform until the movement is done
+            pass
 
     def on_trigger(self, other):
         if self.stopped:
@@ -330,6 +337,49 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
                 self.floor = 1
             else:
                 self.floor = 0
+
+class FallingPlatform(RisingPlatform):
+    @classmethod
+    def from_tmx(cls, tmx_object):
+        platform = FallingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
+        platform.id = tmx_object.id
+        return platform
+
+    def __init__(self, *args, **kwargs):
+        floor = kwargs.pop('floor', 1)
+        kwargs['floor'] = floor
+
+        super(FallingPlatform, self).__init__(self, *args, **kwargs)
+
+    def on_enter(self, other):
+        if not self.stopped or self.z != other.z:
+            other.move_back([self.rect])
+
+        if isinstance(other, Player):
+            if self.stopped and self.floor == 1:
+                self.floor = 0
+
+class RisingFallingPlatform(RisingPlatform):
+    @classmethod
+    def from_tmx(cls, tmx_object):
+        platform = RisingFallingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
+        platform.id = tmx_object.id
+        return platform
+
+    def __init__(self, *args, **kwargs):
+        print('init')
+        super(RisingFallingPlatform, self).__init__(*args, **kwargs)
+
+    def on_enter(self, other):
+        if not self.stopped or self.z != other.z:
+            other.move_back([self.rect])
+
+        if isinstance(other, Player):
+            if self.stopped:
+                if self.floor == 1:
+                    self.floor = 0
+                elif self.floor == 0:
+                    self.floor = 1
 
 
 class Switch(TriggerMixin, pygame.sprite.Sprite):
