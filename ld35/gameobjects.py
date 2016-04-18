@@ -255,7 +255,10 @@ class Player(pygame.sprite.Sprite):
                 d_y = (self.k_up + self.k_down)
             self.velocity = (d_x, d_y)
 
-            self.destination = self.rect.x + d_x * self.movestep, self.rect.y + d_y * self.movestep
+            d = self.rect.x + d_x * self.movestep, self.rect.y + d_y * self.movestep
+            # round/quantize destination to movestep
+            l = lambda x: ((x + 8) / self.movestep) * self.movestep
+            self.destination = (l(d[0]), l(d[1]))
 
             if d_x < 0:
                 self.animate('walk_left')
