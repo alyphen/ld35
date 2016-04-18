@@ -35,8 +35,17 @@ class DepthOrderedScrollGroup(DepthMixin, PyscrollGroup):
         gl = self.get_layer_of_sprite
         new_surfaces_append = new_surfaces.append
 
+        debug_rects = []
+
         for spr in self.sprites():
             new_rect = spr.rect.move(ox, oy - getattr(spr, 'z', 0))
+            if self.debug:
+                debug_rects.append(new_rect)
+
+            if hasattr(spr, 'image_offset'):
+                # not move_ip because we need debug_rect to remain un-moved
+                new_rect = new_rect.move(spr.image_offset)
+
             try:
                 new_surfaces_append((spr.image, new_rect, gl(spr), spr.blendmode))
             except AttributeError:  # generally should only fail when no blendmode available
@@ -48,8 +57,7 @@ class DepthOrderedScrollGroup(DepthMixin, PyscrollGroup):
         # debug
         if self.debug:
             zoom = self._map_layer._zoom_level
-            for spr in new_surfaces:
-                r = spr[1]
+            for r in debug_rects:
                 r.x *= zoom
                 r.y *= zoom
                 r.width *= zoom

@@ -354,6 +354,7 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
         self.rect = pygame.Rect((position[0] - 8, position[1] - 8), (32, 32))
         self.rect = pygame.Rect((position[0], position[1]), (32, 32))
         self.image = pygame.image.load(resources.get("examples/platformgrass.png"))
+        self.image_offset = (-8, -8)
 
     @property
     def rising(self):
