@@ -27,14 +27,14 @@
   </object>
   <object id="3" name="Player" type="Player" x="240" y="480" width="32" height="32"/>
   <object id="10" type="Wall" x="0" y="16" width="192" height="32"/>
-  <object id="13" type="Wall" x="0" y="16" width="32" height="192"/>
+  <object id="13" type="Wall" x="0" y="16" width="32" height="496"/>
   <object id="14" type="Wall" x="0" y="176" width="64" height="32"/>
   <object id="15" type="Wall" x="96" y="176" width="64" height="32"/>
   <object id="18" type="Wall" x="128" y="144" width="32" height="96"/>
   <object id="19" type="Wall" x="128" y="144" width="224" height="32"/>
   <object id="20" type="Wall" x="320" y="144" width="32" height="64"/>
   <object id="21" type="Wall" x="320" y="176" width="192" height="32"/>
-  <object id="22" type="Wall" x="480" y="16" width="32" height="192"/>
+  <object id="22" type="Wall" x="480" y="16" width="32" height="496"/>
   <object id="23" type="Wall" x="320" y="16" width="192" height="32"/>
   <object id="24" type="Wall" x="416" y="176" width="32" height="112"/>
   <object id="25" type="Wall" x="352" y="256" width="96" height="32"/>
@@ -46,19 +46,17 @@
   <object id="32" type="Wall" x="64" y="416" width="224" height="32"/>
   <object id="33" type="Wall" x="192" y="208" width="128" height="128"/>
   <object id="34" type="Wall" x="224" y="336" width="64" height="80"/>
-  <object id="35" type="Wall" x="0" y="336" width="32" height="176"/>
   <object id="36" type="Wall" x="0" y="480" width="192" height="32"/>
   <object id="37" type="Wall" x="320" y="480" width="192" height="32"/>
-  <object id="38" type="Wall" x="480" y="336" width="32" height="176"/>
  </objectgroup>
  <layer name="Collision" width="32" height="32" visible="0">
   <data encoding="base64" compression="zlib">
-   eJzt1NEKQCEIA1D/vR/vPRC2lGnSoLfrDrcos9oscmX3dfHV+f73X/BV97TaP+duzyfrfVP5aB/aj/agqfa9nu6+6l5099mg5zjFj85537P/McVn34OpfnSeXVN8Vbr57D5n91b5G8Vb1OE=
+   eJztlFsKACAIBL17F+8/EB+JbumCnzsDlRHVZhknmofiz874x/+CP2tPq/1nz3s/Uf9btl/iafleDqqf46D7ve/Ly0X1c4nqdfNL/e5+7V7/7r/tW+cXf1bQ/NZzjuZW+Te9UOVB
   </data>
  </layer>
  <layer name="Tile Layer 2" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztVz1PAzEM9QFL+ejSQrvQA7YDZmBChRH4/78HW+QJn0lipz0xNdJT1FPP72zn2U5HREeM48B+Qv7qGu2dMZaMG8ats98F+PuALcGCsWZcMjaMe8aDsz8G+IeALcG14l8H7E69wHvgP/DX+KFnYKo6EeVvqQ/Q9byR/zR9u/7uLvkyo3h9gK5hrxajWeLX9UrXt57GdSq6SvVP7CzNc+HT9UrXt4HGdUrHpZb3Uv0TOxvzPFJPexrHRc7DOeMis9fyvqvOBvOdYueK8cR4TnhhrBz7U+lc7Ii/W8Zbwjv9+F/Kkz5v3srlV+sC/lt+6z90a8+bt7Tec+/B/w/GZ8IX/fUffb31vOl5IPce/F/R77nDb8u/S76996DvheJFnG2canZeEyTfNr+196Bv0TP8R5xtnLy+gvlP6zYaN52H3P8jfWWe+V8LP/zP6c7TW6n/7eu/1l1Nb1Pw5/zXuqvprcav+2eph0p899FdiT9yf9C7wPbtSJ0r8UfuD3q39xLbr1r5/2vZ+cubK+18VlrR+2du/qrtguj9E3dMz66dv1ryXFqY2yLnR+x9A7VuMyk=
+   eJztV8FSAjEM7SoXRL2AKxcEuYGe1aN4VP7/e0yGZuaRSdqUYTnRmTedndnmNUlf2nQppRvCbWAepfroGu1NCDPCivBamdcB/mXAFmNKmBOeCC+ELeGtMr8H+DcBW4wF8M8Dds89hPfKf+Uv8YueBeeqE1H+lvogun5s5L/Le8d9d9mXcYrXB9G12CvFaAz8s7x3rG/LdFynosOrf1PgkW+sf7x3rG+bdFynMC6lvHv1bwE82xSvf+wPxoXPwz3hwZhLedc80fPH/mBc+P+e8EH4zPgiPFfsnMpv2WF/vwm7jJ908N/LE563Gr+V35Fa1xv82n/RLZ7DtbJj8aPevXXs/y/hL2Nv+I/nWs6hzqPFj+8Bb12f/ZVzJ99WfL1R4q/pYZUO+hVeq34MxS/6Zv2K/1b9GIof/7Pifkl+8d/Sj9bbEPyW/6i70nt5KP+9+6SFH+9P7w7l+J6iuxp/pH/AmaHv7Uif4vFH+gecdV+i76tW/ksN/f6qvSv1+8wb0f5T9BnNNyPaf0qPWbPL9qL5buk/pces2WV7/yZ3NSs=
   </data>
  </layer>
  <objectgroup name="Object Layer 2">
