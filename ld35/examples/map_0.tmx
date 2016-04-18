@@ -9,9 +9,12 @@
  <tileset firstgid="131" name="collision" tilewidth="16" tileheight="16" tilecount="4" columns="2">
   <image source="collisiontest.png" width="32" height="32"/>
  </tileset>
+ <tileset firstgid="135" name="rising_platform" tilewidth="16" tileheight="16" tilecount="4" columns="2">
+  <image source="dirtpillar.png" width="32" height="32"/>
+ </tileset>
  <layer name="Tile Layer 1" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJzNlssSgjAMRfuDbGGnqBufGx+sfPy66WjGTiZpk9YCizMDlJYmN7mlcc41E9MDq8y5a2BTMO7ZA4fvdRcQvnMX5h6BU2Tt1Dilc/IexuBf37do+ojswbL+FbgxmnqG4DpVE63wPLa+5wm8FPFqa2IBLJn1tdr8o34kHX2OzsAloWWI1EMxuDxrofmLwcXCMRi+nwOtPY1/xeaXxhGrVap17z61QuvOGkMuWCu0P6we7NkCO2EM48T70BeQzqCFFoyJ9kToO1OcGRZo7lKx0nspp1yvcxqW+ElNOG9M+Rd61pia55zV0txalHh0Da/Sni0e6lWSD8X8aQ6g1hYP1OrG1Zolx5b66N3Pr3L8HPcq6ZXqm7n6lSaXlv8vD/XAOZ1lkn64Z623tcb3a/MGYLZERw==
+   eJzNlrkOwjAMhvOCXekGBRbOhaMTx8jx1DgCi8iyEztpC8MnteRo7N/+Q+Wcq35MA0wz186AecG4ZwWsP891QDjnJKzdANvI3qlxSu3kM5RwA+4Dfp9q+gCewtxz5AyWmjkAR0ZTTxs8p2piJPwe299zAa6K3GhrYgxMmP212nRRP1yeMUc7YJ/QMkTqoRhcnrXQ/MXgYuFoDd/Pgfapxr+oLpp5Uhy0T2O1SrVu3LtWaN1ZY8gFa4X2h9WDPQtgKYxhnPge+gJSG7TQ1gPGRHsi9J0u7wyuHkqhuZOgceC7lFOu1zkNS/ykTzhvTPkXelbXmsfIuaultX1R4tF9eJX2bvFQr5J8KOZP/wBqbfFArW5crVlybKmPxn39KsfP8aySXqm++Ve/0uTS8v/LQz1wSF9LIemHZ9Z628g4v29e4QlHCA==
   </data>
  </layer>
  <objectgroup name="Object Layer 1">
