@@ -73,6 +73,7 @@ class Game:
                     if o.name == 'Player':
                         self.player = game_object
                         self.player.h = 16
+                        self.player.add_floor_listener(self.sprite_layer_handler)
 
                     if isinstance(game_object, gameobjects.TriggerMixin):
                         self.add_trigger(game_object)
@@ -90,6 +91,10 @@ class Game:
 
         self.camera_shakes = 0
         self.camera_shake_dist = 0
+
+    def sprite_layer_handler(self, sender):
+        logger.debug('change sprite {0} to layer: {1}'.format(sender, sender.layer))
+        self.group.change_layer(sender, sender.layer)
 
     def save_trigger_target(self, target):
         # Track all objects as possible trigger targets
