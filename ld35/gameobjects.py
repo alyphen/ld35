@@ -270,7 +270,6 @@ class Player(pygame.sprite.Sprite):
         self.reset_inputs()
 
 
-
 class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
@@ -338,6 +337,7 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
             else:
                 self.floor = 0
 
+
 class FallingPlatform(RisingPlatform):
     @classmethod
     def from_tmx(cls, tmx_object):
@@ -358,6 +358,7 @@ class FallingPlatform(RisingPlatform):
         if isinstance(other, Player):
             if self.stopped and self.floor == 1:
                 self.floor = 0
+
 
 class RisingFallingPlatform(RisingPlatform):
     @classmethod
@@ -423,3 +424,36 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
             self.active = False
             self.image = self.released_image
 
+
+class Keystone(pygame.sprite.Sprite):
+    @classmethod
+    def from_tmx(cls, tmx_object):
+        rect = pygame.Rect(
+            tmx_object.x,
+            tmx_object.y,
+            tmx_object.width,
+            tmx_object.height
+        )
+        keystone = Keystone(rect)
+        keystone.id = tmx_object.id
+        return keystone
+
+    def __init__(self, rect):
+        super(Keystone, self).__init__()
+        self.rect = rect
+        self.images = pyganim.getImagesFromSpriteSheet(resources.get('examples/keystone.png'),
+            rows=1, cols=5, rects=[])
+        self.animation = pyganim.PygAnimation(zip([image for image in self.images], [200] * len(self.images)))
+        self.animate()
+        self.image = self.images[0]
+
+    def animate(self):
+        self.animation.play()
+
+    def on_enter(self, other):
+        if isinstance(other, Player):
+            # Win
+            print("Win")
+
+    def update(self, dt):
+        self.image = self.animation.getCurrentFrame()
