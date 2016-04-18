@@ -603,14 +603,22 @@ class Keystone(TriggerMixin, pygame.sprite.Sprite):
         self.animate()
         self.image = self.images[0]
 
+        self.won = False
+
+        self.font = pygame.font.SysFont('Courier', 48, True, True)
+
     def animate(self):
         self.animation.play()
 
     def on_enter(self, other):
         if isinstance(other, Player):
-            # Win
-            print("Win")
+            self.won = True
+
+            surf = self.font.render("YOU WON!", False, (200, 50, 50))
+            self.image = surf
+            self.image_offset = (-surf.get_width() / 2, 0)
 
     def update(self, dt):
         super(Keystone, self).update(dt)
-        self.image = self.animation.getCurrentFrame()
+        if not self.won:
+            self.image = self.animation.getCurrentFrame()

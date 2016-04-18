@@ -248,7 +248,7 @@ class Game:
 
 
 if __name__ == "__main__":
-    logging.basicConfig()
-    logger.setLevel(logging.DEBUG)
+    #logging.basicConfig()
+    #logger.setLevel(logging.DEBUG)
     game = Game(resources.get('examples/map_0.tmx'))
     game.run()

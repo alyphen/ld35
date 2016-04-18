@@ -27,7 +27,7 @@
    eJztV01PwzAMDdDL+Lp0lF3GYLcNzsAROML+/++ZrcWSZezYbcnGoZaeokit8+w4L3FK/8fOAOeAi8DYVPR3BZgDHgFPzrgO8FgFfCFawIL9dwd4AGwBz874EuCxCfhCLBUei3R8k+tOPCYeY3iQHhD+Smf68uijL6QLtwN5XKZDLDwOzAPGNktxfSFdIH+lnM0UHvMcC9fLVdJ1zzNLT1u2Ds01PcVYuF5ukq57pfujSbaeLtk6W8WvVx8YH88T1ss14EYZS3Xh1aXHA+PjecLvO8Ar4C3jHXDv+BnLQ/OH8X8APjO+0iEf1v5ZdVmaa/vfiO87hYfMB513Xq9r4afEg+uF9T/m4xvwk7FLv/PB65/qVe6vlx/SC+v/LsdP9UnzPvs9tl5IH1q2vqY/tXmQPuD5p3xo+lObB/9O249T8KB8aOdNntOaPLR88PNaet/Xzod1Xw3hwe9t6+7GvA85r1EekT6Ijwj5Xoj0Wx6PSB/ER9lfyXtxKI9jmVUP3vtXvhsti/bZ8lxH6wER7bOpl/b8cn/ReujTZ1Mv7fmN+JvsdLYHMlI1Kw==
   </data>
  </layer>
- <objectgroup name="Floor 0 objects" visible="0">
+ <objectgroup name="Floor 0 objects">
   <object id="1" type="Switch" x="112" y="320" width="16" height="16">
    <properties>
     <property name="target_id" type="int" value="4"/>
