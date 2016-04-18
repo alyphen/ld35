@@ -35,16 +35,22 @@ class TriggerMixin(object):
         self.collisions_last_frame.clear()
 
     def on_collision(self, other):
-        if other is self or other.z != self.z:
+        if other is self:
             return
 
+        track = True
         # find new collisions and do on_enter
+        # if on_enter returns False then do not track the other
         if hasattr(self, 'on_enter') and other not in self.active_collisions:
-            self.on_enter(other)
+            track = self.on_enter(other)
+
+        if track is None:
+            track = True
 
         # track this collision for on_enter/on_exit
-        self.collisions_last_frame.add(other)
-        self.active_collisions.add(other)
+        if track:
+            self.collisions_last_frame.add(other)
+            self.active_collisions.add(other)
 
 
 class Teleport(TriggerMixin, pygame.sprite.Sprite):
@@ -346,6 +352,7 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
         self.floor = floor
         self.height = floor * 32
         self.rect = pygame.Rect((position[0] - 8, position[1] - 8), (32, 32))
+        self.rect = pygame.Rect((position[0], position[1]), (32, 32))
         self.image = pygame.image.load(resources.get("examples/platformgrass.png"))
 
     @property
@@ -376,16 +383,19 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
 
 
     def on_enter(self, other):
+        if not isinstance(other, Player):
+            return
         logger.info('{other} entered {self}'.format(other=other, self=self))
-        logger.info('\t\t{0}, {1} =?= {2}'.format(self.stopped, self.z, other.z))
-        if not self.stopped or self.z != other.z:
-            logger.info('\t\tmove_back()!')
+        logger.info('\t\t{0}, {1} =?= {2}'.format(self.stopped, self.floor, other.floor))
+        if not self.stopped or self.floor != other.floor:
+            logger.info('\t\tmove_back()!  removing from active collisions')
             other.move_back([self.rect])
-            pass
+            return False # Explicitly do not track this object.  (Prevents on_trigger)
 
-        if isinstance(other, Player):
-            if self.stopped and self.floor == 0:
-                self.floor = 1
+        if hasattr(self, 'target') and hasattr(self.target, 'on_trigger'):
+            self.target.on_trigger(self)
+
+        return True
 
     def on_exit(self, other):
         logger.info('{other} exited {self}'.format(other=other, self=self))
@@ -415,7 +425,7 @@ class FallingPlatform(RisingPlatform):
         super(FallingPlatform, self).__init__(self, *args, **kwargs)
 
     def on_enter(self, other):
-        if not self.stopped or self.z != other.z:
+        if not self.stopped or self.floor != other.floor:
             other.move_back([self.rect])
 
         if isinstance(other, Player):
@@ -435,7 +445,7 @@ class RisingFallingPlatform(RisingPlatform):
         super(RisingFallingPlatform, self).__init__(*args, **kwargs)
 
     def on_enter(self, other):
-        if not self.stopped or self.z != other.z:
+        if not self.stopped or self.floor != other.floor:
             other.move_back([self.rect])
 
         if isinstance(other, Player):
@@ -473,7 +483,7 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
         self.active = False
 
     def on_enter(self, other):
-        if isinstance(other, Player):
+        if isinstance(other, Player) and getattr(self, 'floor', 0) == other.floor:
             if not self.active:
                 self._sound.play()
             self.active = True

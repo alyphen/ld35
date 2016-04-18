@@ -114,6 +114,8 @@ class Game:
             logger.debug('Failed to find triggers for target: {0}, {1}'.format(target.id, target))
 
     def add_trigger(self, game_object):
+        self.triggers.append(game_object)
+
         if hasattr(game_object, 'target_id') and game_object.target_id is not None:
             target_id = game_object.target_id
             if target_id == 'self':
@@ -131,8 +133,6 @@ class Game:
             t = self.waiting_triggers.get(target_id, [])
             t.append(game_object)
             self.waiting_triggers[target_id] = t
-
-            self.triggers.append(game_object)
 
 
     def add_game_object(self, game_object):
