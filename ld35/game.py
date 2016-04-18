@@ -33,6 +33,7 @@ class Game:
         pygame.init()
         self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self._running = True
+        self.ignore_walls = False
 
         # Load map data
         tmx_data = load_pygame(self.filename)
@@ -158,11 +159,13 @@ class Game:
             if event.key == pygame.K_SPACE:
                 self.camera_shake()
             if event.key == pygame.K_EQUALS:
-                self.player.z += 1
+                self.player.floor += 1
             if event.key == pygame.K_MINUS:
-                self.player.z -= 1
+                self.player.floor -= 1
             if event.key == pygame.K_r:
                 self.group.debug = not self.group.debug
+            if event.key == pygame.K_t:
+                self.ignore_walls = not self.ignore_walls
 
         self.player.on_event(event)
 
@@ -180,11 +183,12 @@ class Game:
         # otherwise this will fail
         # Can use a new group to hold all player sprites if needed
         # for sprite in self.group.sprites():
-        floor_walls = self.walls.get(self.player.floor, [])
-        collision_list = self.player.rect.collidelistall(floor_walls)
-        if len(collision_list) > 0:
-            wall_list = [floor_walls[i] for i in collision_list]
-            self.player.move_back(wall_list)
+        if not self.ignore_walls:
+            floor_walls = self.walls.get(self.player.floor, [])
+            collision_list = self.player.rect.collidelistall(floor_walls)
+            if len(collision_list) > 0:
+                wall_list = [floor_walls[i] for i in collision_list]
+                self.player.move_back(wall_list)
 
         # Camera shake
         if self.camera_shakes > 0:
@@ -196,7 +200,9 @@ class Game:
     def on_collide(self):
         for sprite in self.group.sprites():
             trigger_rects = [x.rect for x in self.triggers]
-            trigger_collision_list = sprite.rect.collidelistall(trigger_rects)
+            spr_r = sprite.rect
+            hotspot = spr_r.inflate(-spr_r.width / 4, -spr_r.height / 4)
+            trigger_collision_list = hotspot.collidelistall(trigger_rects)
             if len(trigger_collision_list) > 0:
                 collider = self.triggers[trigger_collision_list[0]]  # Just get the first index
                 collider.on_collision(sprite)

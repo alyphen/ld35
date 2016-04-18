@@ -41,6 +41,8 @@ class DepthOrderedScrollGroup(DepthMixin, PyscrollGroup):
             new_rect = spr.rect.move(ox, oy - getattr(spr, 'z', 0))
             if self.debug:
                 debug_rects.append(new_rect)
+                if hasattr(spr, 'hitbox'):
+                    debug_rects.append(spr.hitbox.move(ox, oy - getattr(spr, 'z', 0)))
 
             if hasattr(spr, 'image_offset'):
                 # not move_ip because we need debug_rect to remain un-moved

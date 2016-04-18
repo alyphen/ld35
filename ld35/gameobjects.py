@@ -131,6 +131,11 @@ class Player(pygame.sprite.Sprite):
     def layer(self, value):
         self.floor = int((value - self.layer_floor_offset) / self.layers_per_floor)
 
+    @property
+    def hitbox(self):
+        r = self.rect
+        return r.inflate(-r.width / 2, -r.height / 2)
+
     def on_floor_change(self):
         for listener in self._floor_listeners:
             listener(self)
@@ -442,7 +447,6 @@ class RisingFallingPlatform(RisingPlatform):
         return platform
 
     def __init__(self, *args, **kwargs):
-        print('init')
         super(RisingFallingPlatform, self).__init__(*args, **kwargs)
 
     def on_enter(self, other):
@@ -499,7 +503,7 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
             self.image = self.released_image
 
 
-class Keystone(pygame.sprite.Sprite):
+class Keystone(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
         rect = pygame.Rect(
