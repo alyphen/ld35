@@ -39,6 +39,7 @@
   <object id="7" type="RisingPlatform" x="416" y="48" width="32" height="32">
    <properties>
     <property name="floor" type="int" value="0"/>
+    <property name="target_id" value="self"/>
    </properties>
   </object>
   <object id="10" type="Wall" x="0" y="16" width="192" height="32"/>
