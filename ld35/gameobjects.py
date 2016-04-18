@@ -160,6 +160,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = speed
         self.destination = self.position = position
         self._old_position = self.position
+        self._old_destination = self.destination
 
         self.velocity = (0, 0)
 
@@ -258,6 +259,7 @@ class Player(pygame.sprite.Sprite):
             d = self.rect.x + d_x * self.movestep, self.rect.y + d_y * self.movestep
             # round/quantize destination to movestep
             l = lambda x: ((x + 8) / self.movestep) * self.movestep
+            self._old_destination = self.destination
             self.destination = (l(d[0]), l(d[1]))
 
             if d_x < 0:
@@ -333,7 +335,8 @@ class Player(pygame.sprite.Sprite):
                 self.reset_inputs()
 
             self.position = (int(x), int(y))
-            self.destination = self.position
+            self.destination = self._old_destination
+            self.position = self.destination
 
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
@@ -537,4 +540,5 @@ class Keystone(TriggerMixin, pygame.sprite.Sprite):
             print("Win")
 
     def update(self, dt):
+        super(Keystone, self).update(dt)
         self.image = self.animation.getCurrentFrame()
