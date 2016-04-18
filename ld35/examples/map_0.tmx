@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="34" height="34" tilewidth="16" tileheight="16" nextobjectid="74">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="34" height="34" tilewidth="16" tileheight="16" nextobjectid="78">
  <properties>
   <property name="music" value="assets/ld35_02.ogg"/>
  </properties>
@@ -14,10 +14,10 @@
  </tileset>
  <layer name="Tile Layer 1" width="34" height="34">
   <data encoding="base64" compression="zlib">
-   eJzNl0tTAjEQhPMHvbI3WfSiqBcRTj6Ogr/aSekUwzAz6STLY6u+KmAD6fRMekNK13PdXBipYyQWjb9zR9x33Jc6lsTT/+tBIMe/O7/zTLwE85Tue3UZkq+lh29iewEdYzqs9Y74Kej4CLSg82TeiHU6rnVmI17LnvH8yMycz6N5Mp/EF+CV7JlIB3NLzI150JohYxAdnv/s2SuxUp/rGkusPYfqsPxH0X4iflhrs9gAY2rw/ND7vJSHVr2QcbweT4fe51Ee6l4Y018v6f6M1uLp6IF7Se+naC0lHQ/Eo3OP183vZa4wA1gj1A/ZL7xGvYdkftU+C1Ad3nOhFe1lSYdeF7/3vLaywqqt9hL149RoHVbmlvKQs6/nfNDqR8sZwfvuqetSk/2ejtocR4ieXZ4OnX1enkU5d47+qO2jUqZaOtC6Wj2Jnhv0PKgfY9rnH/pMtzR7deSrtN96zmPn7I+oli3nwozO1Cn/z03lh1df1h6d0yUzNX6qukzlxzVcv3TmRwg=
+   eJzNl7luAzEMRPWDab1wkzhJk8NpcrjKUeb46lBICBADkhppfWzxgD3k1YikRvS6lLJeCGcnxurYCJeD37kSrme8tzruhPv/68lgx78G39kKD8k8rfdRXqYSa5nDp/B1Ah2Y62/hp6HjLdHCzlN5Fl6cXFd25trWTLZfVsHzbJ7Ku/BBxMrWDLNvz4ULZx42Z8wY1j+8+GvMHoUneI45tnh7jtXhxZ8F48nEw1ubx44Y00MUD9znLT/08sWM0/VEOnCfZ36ItbApf7WE9Zmt5RDnnNYS7qdsLS0dN8Jt8E7XrffWV5SJzBEbD1svukbcQ9a/es8CVkd0LoyCsWzpwHXpfRRrzyu83GIsl9iPVTzPbfmhet+c/mA0HiM9QvTbQ+elx/sjHb0+zpCdXZEO9L7IzzKfO0Z99NZRy1M9HWxevZpk+wacZ6QfY890T3OUR9XR2m9z+rFj1keWy5G+sIKeus//c/uKR5Rf1Z716ZYVjF/aObcEfgFcH3Ts
   </data>
  </layer>
- <objectgroup name="Object Layer 1" visible="0">
+ <objectgroup name="Object Layer 1">
   <object id="1" type="Switch" x="112" y="320" width="16" height="16">
    <properties>
     <property name="target_id" type="int" value="4"/>
@@ -63,7 +63,7 @@
    eJztV8FOwzAMNdDLGHDpKLuMwW4bnIEj4wj7/+/B1mLJMk7stqRwWKSnKFLrPDv2Swzwf8YZ4hxxEZibivbmiAXiAfHozJsAj3XAFqFFLMV/t4h7xA7x5MzPAR7bgC3CyuCxhOmH3vfE48RjDA/WA8Zv6UxfHn30hXXhZiCPSzj6Iv2gOJBvM4jrC+sC2yvFbGbwWCRfpF6uwdY9b+T0tBX78NrSU/JF6uUWbN0r3R8N5PV0JfbZGXa9/CD/ZJwoX64Q18ZcygsvLz0e5J+ME33fIV4QrwlviDvHzlgelj3y/x2xT/iAYzxy55fLy9LaOv9Gfd8ZPHQ8uN5lvm6UnRIPqRe5/yken4ivhAP8jIfMf85Xfb5efFgvcv93yX/OT173Oe+x+cL60Ir9Lf2pzYP1geqf42HpT20e8jvrPP6CB8fDqjddpzV5WPGQ9Vp639eOR+6+GsJD3tu5u5viPqReozwifZCcCfq9EOm3PB6RPkjOur/S9+JQHlONXD5471/9bsyNaJ+t6zqaD4Ron829tGdX2ovmQ58+m3tpz27E3pTjG7FLNSs=
   </data>
  </layer>
- <objectgroup name="Object Layer 2" visible="0">
+ <objectgroup name="Object Layer 2">
   <object id="4" type="RisingPlatform" x="80" y="192" width="32" height="32">
    <properties>
     <property name="floor" type="int" value="1"/>
@@ -102,7 +102,7 @@
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="46" type="Wall" x="48" y="48" width="96" height="128">
+  <object id="46" type="Wall" x="48" y="48" width="96" height="112">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
@@ -112,12 +112,12 @@
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="51" type="Wall" x="368" y="48" width="128" height="128">
+  <object id="51" type="Wall" x="368" y="96" width="128" height="80">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="55" type="Wall" x="48" y="208" width="96" height="64">
+  <object id="55" type="Wall" x="48" y="224" width="96" height="48">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
@@ -198,6 +198,21 @@
    </properties>
   </object>
   <object id="73" type="Wall" x="208" y="16" width="128" height="32">
+   <properties>
+    <property name="floor" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="74" type="Wall" x="464" y="48" width="32" height="48">
+   <properties>
+    <property name="floor" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="76" type="Wall" x="48" y="160" width="32" height="16">
+   <properties>
+    <property name="floor" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="77" type="Wall" x="112" y="160" width="32" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
