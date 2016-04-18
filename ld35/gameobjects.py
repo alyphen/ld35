@@ -8,6 +8,12 @@ import logging
 logger = logging.getLogger()
 
 
+def floor_for_z(z):
+    return int(z / 32)
+
+def z_for_floor(floor):
+    return floor * 32
+
 class TriggerMixin(object):
     def __init__(self, *args, **kwargs):
         super(TriggerMixin, self).__init__(*args, **kwargs)
@@ -71,6 +77,13 @@ class Teleport(TriggerMixin, pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
+    # how many layers are displayed per floor?
+    layers_per_floor = 3
+    # out of the x layers per floor, which one does this go on?
+    layer_floor_offset = 2
+
+    _z = 0
+
     @classmethod
     def from_tmx(self, tmx_object):
         player = Player((tmx_object.x, tmx_object.y))
@@ -79,9 +92,51 @@ class Player(pygame.sprite.Sprite):
 
         return player
 
+    @property
+    def z(self):
+        return self._z
+
+    @z.setter
+    def z(self, value):
+        floor = self.floor
+
+        self._z = value
+
+        if floor != self.floor:
+            self.on_floor_change()
+
+    @property
+    def floor(self):
+        return int(self.z / 32)
+
+    @floor.setter
+    def floor(self, value):
+        # this resets z to be on the floor.
+        # perhaps it should instead map z into the floor
+        # e.g. if z = 36 (on floor 1) map it to z = 4 (on floor 0)
+        self.z = value * 32
+
+    @property
+    def layer(self):
+        '''Returns layer number assuming there are 2 layers per floor.'''
+        return self.floor * self.layers_per_floor + self.layer_floor_offset
+
+    @layer.setter
+    def layer(self, value):
+        self.floor = int((value - self.layer_floor_offset) / self.layers_per_floor)
+
+    def on_floor_change(self):
+        for listener in self._floor_listeners:
+            listener(self)
+
     def __init__(self, position, movestep=16, speed=200):
         super(Player, self).__init__()
         # self.image = pygame.image.load("examples/placeholder_player.png")
+
+        self._floor_listeners = set()
+
+        self.layer = 1
+        self._z = 0
 
         self.build_animations()
         self.update_animation()
@@ -100,6 +155,14 @@ class Player(pygame.sprite.Sprite):
         self._snd_step_concrete = pygame.mixer.Sound(resources.get("assets/step_concrete.wav"))
         self._snd_step_grass = pygame.mixer.Sound(resources.get("assets/step_grass.wav"))
         self._snd_step_water = pygame.mixer.Sound(resources.get("assets/step_water.wav"))
+
+    def add_floor_listener(self, listener):
+        '''Adds a callable to be called when this object's floor changes.'''
+        self._floor_listeners.add(listener)
+
+    def remove_floor_listener(self, listener):
+        '''Removes the given floor listener.'''
+        self._floor_listeners.remove(listener)
 
     def build_animations(self):
         images = pyganim.getImagesFromSpriteSheet(
