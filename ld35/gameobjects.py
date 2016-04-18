@@ -63,7 +63,6 @@ class Player(pygame.sprite.Sprite):
         self._old_position = self.position
 
         self.velocity = (0, 0)
-        self.last_d_t = 0
 
         self._snd_step_concrete = pygame.mixer.Sound(resources.get("assets/step_concrete.wav"))
         self._snd_step_grass = pygame.mixer.Sound(resources.get("assets/step_grass.wav"))
@@ -131,7 +130,6 @@ class Player(pygame.sprite.Sprite):
             self.k_down = down * 1
 
     def update(self, d_t):
-        self.last_d_t = d_t
         self._old_position = self.position
 
         d_t /= 1000.0
