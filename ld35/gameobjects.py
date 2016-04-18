@@ -325,7 +325,11 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
         pass
 
     def on_trigger(self, other):
-        self.floor = 1
+        if self.stopped:
+            if self.floor == 0:
+                self.floor = 1
+            else:
+                self.floor = 0
 
 
 class Switch(TriggerMixin, pygame.sprite.Sprite):
@@ -350,6 +354,7 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
         self._sound = pygame.mixer.Sound("assets/step_concrete.wav")
 
         self.image = images[0]
+        self.released_image = images[0]
         self.pressed_image = images[1]
         self.active = False
 
@@ -363,4 +368,8 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
             if hasattr(self, 'target') and hasattr(self.target, 'on_trigger'):
                 self.target.on_trigger(self)
 
+    def on_exit(self, other):
+        if self.active:
+            self.active = False
+            self.image = self.released_image
 
