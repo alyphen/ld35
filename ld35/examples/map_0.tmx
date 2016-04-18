@@ -187,7 +187,7 @@
     <property name="floor" type="int" value="1"/>
    </properties>
   </object>
-  <object id="71" x="336" y="512" width="192" height="16">
+  <object id="71" type="Wall" x="336" y="512" width="192" height="16">
    <properties>
     <property name="floor" type="int" value="1"/>
    </properties>
