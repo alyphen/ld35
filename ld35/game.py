@@ -166,6 +166,7 @@ class Game:
                 self.group.debug = not self.group.debug
             if event.key == pygame.K_t:
                 self.ignore_walls = not self.ignore_walls
+                logger.debug('ignore_walls is {0}'.format(self.ignore_walls))
 
         self.player.on_event(event)
 
@@ -198,6 +199,8 @@ class Game:
             self.camera_shake_dist = 0
 
     def on_collide(self):
+        if self.ignore_walls:
+            return
         for sprite in self.group.sprites():
             trigger_rects = [x.rect for x in self.triggers]
             spr_r = sprite.rect
