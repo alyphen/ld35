@@ -51,7 +51,7 @@ class Game:
         self.teleport_group = pygame.sprite.Group()
 
         # setup level geometry with simple pygame rects, loaded from pytmx
-        self.walls = list()
+        self.walls = {} # key is floor, value is list of wall rects
 
         self.trigger_targets = {}  # targets by target ID
         self.waiting_triggers = {} # lists of trigger targets by target ID
@@ -81,7 +81,11 @@ class Game:
                     self.save_trigger_target(game_object)
 
             elif o.type == 'Wall':
-                self.walls.append(pygame.Rect(
+                floor = int(o.properties.get('floor', 0))
+                if not self.walls.has_key(floor):
+                    self.walls[floor] = []
+
+                self.walls[floor].append(pygame.Rect(
                     o.x, o.y,
                     o.width, o.height))
             else:
@@ -176,9 +180,10 @@ class Game:
         # otherwise this will fail
         # Can use a new group to hold all player sprites if needed
         # for sprite in self.group.sprites():
-        collision_list = self.player.rect.collidelistall(self.walls)
+        floor_walls = self.walls.get(self.player.floor, [])
+        collision_list = self.player.rect.collidelistall(floor_walls)
         if len(collision_list) > 0:
-            wall_list = [self.walls[i] for i in collision_list]
+            wall_list = [floor_walls[i] for i in collision_list]
             self.player.move_back(wall_list)
 
         # Camera shake
