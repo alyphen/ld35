@@ -510,6 +510,13 @@ class Switch(TriggerMixin, pygame.sprite.Sprite):
 
 
 class Keystone(TriggerMixin, pygame.sprite.Sprite):
+    # how many layers are displayed per floor?
+    layers_per_floor = 3
+    # out of the x layers per floor, which one does this go on?
+    layer_floor_offset = 2
+
+    _z = 0
+
     @classmethod
     def from_tmx(cls, tmx_object):
         rect = pygame.Rect(
@@ -522,8 +529,47 @@ class Keystone(TriggerMixin, pygame.sprite.Sprite):
         keystone.id = tmx_object.id
         return keystone
 
+    @property
+    def z(self):
+        return self._z
+
+    @z.setter
+    def z(self, value):
+        floor = self.floor
+
+        self._z = value
+
+        if floor != self.floor:
+            self.on_floor_change()
+
+    @property
+    def floor(self):
+        return int(self.z / 32)
+
+    @floor.setter
+    def floor(self, value):
+        # this resets z to be on the floor.
+        # perhaps it should instead map z into the floor
+        # e.g. if z = 36 (on floor 1) map it to z = 4 (on floor 0)
+        self.z = value * 32
+
+    @property
+    def layer(self):
+        '''Returns layer number assuming there are 2 layers per floor.'''
+        return self.floor * self.layers_per_floor + self.layer_floor_offset
+
+    @layer.setter
+    def layer(self, value):
+        self.floor = int((value - self.layer_floor_offset) / self.layers_per_floor)
+
+    def on_floor_change(self):
+        for listener in self._floor_listeners:
+            listener(self)
+
     def __init__(self, rect):
         super(Keystone, self).__init__()
+        self._floor_listeners = set()
+
         self.rect = rect
         self.images = pyganim.getImagesFromSpriteSheet(resources.get('examples/keystone.png'),
             rows=1, cols=5, rects=[])

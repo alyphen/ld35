@@ -67,6 +67,8 @@ class Game:
                     game_object.id = int(o.id)
                     game_object.z = 0
                     game_object.h = 0
+                    floor = int(o.properties.get('floor', 0))
+                    game_object.floor = floor
                     if hasattr(o, 'target_id'):
                         game_object.target_id = getattr(o, 'target_id')
                     self.group.add(game_object)
