@@ -74,15 +74,8 @@ class Game:
                         self.player = game_object
                         self.player.h = 16
 
-                    elif o.type == 'Teleport':
+                    if isinstance(game_object, gameobjects.TriggerMixin):
                         self.add_trigger(game_object)
-
-                    elif o.type == 'RisingPlatform':
-                        self.add_trigger(game_object)
-
-                    elif o.type == 'Switch':
-                        self.add_trigger(game_object)
-
 
                     self.save_trigger_target(game_object)
 
