@@ -63,6 +63,7 @@ class Player(pygame.sprite.Sprite):
         self._old_position = self.position
 
         self.velocity = (0, 0)
+        self.last_d_t = 0
 
         self._snd_step_concrete = pygame.mixer.Sound(resources.get("assets/step_concrete.wav"))
         self._snd_step_grass = pygame.mixer.Sound(resources.get("assets/step_grass.wav"))
@@ -130,6 +131,7 @@ class Player(pygame.sprite.Sprite):
             self.k_down = down * 1
 
     def update(self, d_t):
+        self.last_d_t = d_t
         self._old_position = self.position
 
         d_t /= 1000.0
@@ -187,7 +189,7 @@ class Player(pygame.sprite.Sprite):
 
     # This is used to move back from walls
     # Should really be more generic collision response
-    def move_back(self, d_t, walls):
+    def move_back(self, walls):
         # self.position = self._old_position
 
         for wall in walls:
@@ -246,18 +248,65 @@ class RisingPlatform(pygame.sprite.Sprite):
         self.height = floor * 32
         self.rect = pygame.Rect(position, (32, 32))
         self.image = pygame.image.load(resources.get("assets/rising_platform.png"))
+        self.collisions_last_frame = set()
+        self.active_collisions = set()
+
+    @property
+    def rising(self):
+        return self.height < self.floor * 32
+
+    @property
+    def falling(self):
+        return self.height > self.floor * 32
+
+    @property
+    def stopped(self):
+        return not (self.rising or self.falling)
 
     def update(self, d_t):
-        if self.height > self.floor * 32:
+        if self.falling:
             self.height -= 1
-        elif self.height < self.floor * 32:
+        elif self.rising:
             self.height += 1
 
         self.z = self.height
 
+        # find collisions not in last frame and do on_exit
+        exiting = self.active_collisions - self.collisions_last_frame
+        for c in exiting:
+            self.on_exit(c)
+            self.active_collisions.remove(c)
+
+        # reset detection for this frame
+        self.collisions_last_frame.clear()
+
     def on_collision(self, other):
+        if other is self:
+            return
+
         if isinstance(other, Player):
-            self.floor = 1
+            if self.stopped and self.floor == 0:
+                self.floor = 1
+
+        # find new collisions and do on_enter
+        if other not in self.active_collisions:
+            self.on_enter(other)
+
+        # track this collision for on_enter/on_exit
+        self.collisions_last_frame.add(other)
+        self.active_collisions.add(other)
+
+    def on_enter(self, other):
+        logger.info('{other} entered {self}'.format(other=other, self=self))
+        logger.info('\t\t{0}, {1} =?= {2}'.format(self.stopped, self.z, other.z))
+        if not self.stopped or self.z != other.z:
+            logger.info('\t\tmove_back()!')
+            other.move_back([self.rect])
+            pass
+
+    def on_exit(self, other):
+        logger.info('{other} exited {self}'.format(other=other, self=self))
+        pass
 
     def on_trigger(self, other):
         self.floor = 1

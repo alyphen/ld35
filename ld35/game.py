@@ -179,7 +179,7 @@ class Game:
         collision_list = self.player.feet.collidelistall(self.walls)
         if len(collision_list) > 0:
             wall_list = [self.walls[i] for i in collision_list]
-            self.player.move_back(d_t, wall_list)
+            self.player.move_back(wall_list)
 
         # Camera shake
         if self.camera_shakes > 0:
