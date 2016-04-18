@@ -26,22 +26,6 @@
    </properties>
   </object>
   <object id="3" name="Player" type="Player" x="240" y="480" width="32" height="32"/>
-  <object id="4" type="RisingPlatform" x="64" y="176" width="32" height="32">
-   <properties>
-    <property name="floor" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="5" type="RisingPlatform" x="128" y="240" width="32" height="32">
-   <properties>
-    <property name="floor" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="7" type="RisingPlatform" x="416" y="48" width="32" height="32">
-   <properties>
-    <property name="floor" type="int" value="0"/>
-    <property name="target_id" value="self"/>
-   </properties>
-  </object>
   <object id="10" type="Wall" x="0" y="16" width="192" height="32"/>
   <object id="13" type="Wall" x="0" y="16" width="32" height="192"/>
   <object id="14" type="Wall" x="0" y="176" width="64" height="32"/>
@@ -74,7 +58,25 @@
  </layer>
  <layer name="Tile Layer 2" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztV8tOAzEMTIELr15aaC90gVuBM3BCwBH4/+/BFhkxNUnstCtOjTSydrXxrO2Mk0xSSgeCw4A9Sv6YdPo7FcwF14Ibx94G+IeAL8VMsBRcCFaCO8G9Yx8C/OuAL8UV8S8Dfsce4N3z7/lb/NAzMFafiPL39AfoetrJf5L/nf97kmM5zt9F+gN0DX+tHMEv9yvub0NnPDwP/tiqn7l5r3zcr7i/rdNmn+K8tOpe63/qZ2XeR/rpkDbzouvhTHBesK08bauztflP9XMpeBQ8ZTwLFo7/sXSufjTeV8Fbxnv6ib9WJ15v3ijVl3WB+C2/jR+6tevNG6z30jzE/yH4zPhKf+PHvt673vg8UJqH+Bfpd93h2fJvU29vHvQ9I17k2eap5eclQ+tt69uaB32rnhE/8mzz5O0rOP+xbqN54zqUvo/sK9PCdz38iL+kO09vtf1v1/hZdy29jcFfip9119Jbi5/3z9oeqvndRXc1/sj9ga3C7tuRPlfjj9wf2Np7id2vevn/a9jzl3eutOez2ojeP0vnr5ZVRO+fuGN6fu35q6fOtYFzW2T9qL9vDK4zGQ==
+   eJztVz1PAzEM9QFL+ejSQrvQA7YDZmBChRH4/78HW+QJn0lipz0xNdJT1FPP72zn2U5HREeM48B+Qv7qGu2dMZaMG8ats98F+PuALcGCsWZcMjaMe8aDsz8G+IeALcG14l8H7E69wHvgP/DX+KFnYKo6EeVvqQ/Q9byR/zR9u/7uLvkyo3h9gK5hrxajWeLX9UrXt57GdSq6SvVP7CzNc+HT9UrXt4HGdUrHpZb3Uv0TOxvzPFJPexrHRc7DOeMis9fyvqvOBvOdYueK8cR4TnhhrBz7U+lc7Ii/W8Zbwjv9+F/Kkz5v3srlV+sC/lt+6z90a8+bt7Tec+/B/w/GZ8IX/fUffb31vOl5IPce/F/R77nDb8u/S76996DvheJFnG2canZeEyTfNr+196Bv0TP8R5xtnLy+gvlP6zYaN52H3P8jfWWe+V8LP/zP6c7TW6n/7eu/1l1Nb1Pw5/zXuqvprcav+2eph0p899FdiT9yf9C7wPbtSJ0r8UfuD3q39xLbr1r5/2vZ+cubK+18VlrR+2du/qrtguj9E3dMz66dv1ryXFqY2yLnR+x9A7VuMyk=
   </data>
  </layer>
+ <objectgroup name="Object Layer 2">
+  <object id="4" type="RisingPlatform" x="64" y="176" width="32" height="32">
+   <properties>
+    <property name="floor" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="5" type="RisingPlatform" x="128" y="240" width="32" height="32">
+   <properties>
+    <property name="floor" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="7" type="RisingPlatform" x="416" y="48" width="32" height="32">
+   <properties>
+    <property name="floor" type="int" value="0"/>
+    <property name="target_id" value="self"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>
