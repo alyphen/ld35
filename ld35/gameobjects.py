@@ -328,7 +328,7 @@ class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
         self.floor = 1
 
 
-class Switch(pygame.sprite.Sprite):
+class Switch(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
         rect = pygame.Rect(
@@ -353,7 +353,7 @@ class Switch(pygame.sprite.Sprite):
         self.pressed_image = images[1]
         self.active = False
 
-    def on_collision(self, other):
+    def on_enter(self, other):
         if isinstance(other, Player):
             if not self.active:
                 self._sound.play()
@@ -362,3 +362,5 @@ class Switch(pygame.sprite.Sprite):
 
             if hasattr(self, 'target') and hasattr(self.target, 'on_trigger'):
                 self.target.on_trigger(self)
+
+
