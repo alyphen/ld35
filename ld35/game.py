@@ -159,6 +159,8 @@ class Game:
                 self.player.z += 1
             if event.key == pygame.K_MINUS:
                 self.player.z -= 1
+            if event.key == pygame.K_r:
+                self.group.debug = not self.group.debug
 
         self.player.on_event(event)
 
@@ -176,7 +178,7 @@ class Game:
         # otherwise this will fail
         # Can use a new group to hold all player sprites if needed
         # for sprite in self.group.sprites():
-        collision_list = self.player.feet.collidelistall(self.walls)
+        collision_list = self.player.rect.collidelistall(self.walls)
         if len(collision_list) > 0:
             wall_list = [self.walls[i] for i in collision_list]
             self.player.move_back(wall_list)

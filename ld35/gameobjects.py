@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
 
         return player
 
-    def __init__(self, position, movestep=32, speed=200):
+    def __init__(self, position, movestep=16, speed=200):
         super(Player, self).__init__()
         # self.image = pygame.image.load("examples/placeholder_player.png")
 
@@ -115,6 +115,10 @@ class Player(pygame.sprite.Sprite):
         self.k_up = 0
         self.k_down = 0
 
+    @property
+    def has_input(self):
+        return sum((self.k_left, self.k_right, self.k_up, self.k_down)) != 0
+
     def on_event(self, event):
         down = event.type == pygame.KEYDOWN
         if not hasattr(event, 'key'):
@@ -177,7 +181,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.position == self.destination and self.velocity != (0, 0):
             self.velocity = (0, 0)
-            self.animate('idle')
+            if not self.has_input:
+                self.animate('idle')
 
         self.update_animation()
 
@@ -200,19 +205,19 @@ class Player(pygame.sprite.Sprite):
 
             x, y = self.position
 
-            if overlap.collidepoint(self.feet.midtop):
+            if overlap.collidepoint(self.rect.midtop):
                 y -= overlap.height
                 y = self._old_position[1]
                 self.reset_inputs()
-            elif overlap.collidepoint(self.feet.midleft):
+            elif overlap.collidepoint(self.rect.midleft):
                 x += overlap.width
                 x = self._old_position[0]
                 self.reset_inputs()
-            elif overlap.collidepoint(self.feet.midbottom):
+            elif overlap.collidepoint(self.rect.midbottom):
                 y += overlap.height
                 y = self._old_position[1]
                 self.reset_inputs()
-            elif overlap.collidepoint(self.feet.midright):
+            elif overlap.collidepoint(self.rect.midright):
                 x -= overlap.width
                 x = self._old_position[0]
                 self.reset_inputs()
@@ -282,10 +287,6 @@ class RisingPlatform(pygame.sprite.Sprite):
         if other is self:
             return
 
-        if isinstance(other, Player):
-            if self.stopped and self.floor == 0:
-                self.floor = 1
-
         # find new collisions and do on_enter
         if other not in self.active_collisions:
             self.on_enter(other)
@@ -301,6 +302,11 @@ class RisingPlatform(pygame.sprite.Sprite):
             logger.info('\t\tmove_back()!')
             other.move_back([self.rect])
             pass
+
+        if isinstance(other, Player):
+            if self.stopped and self.floor == 0:
+                self.floor = 1
+
 
     def on_exit(self, other):
         logger.info('{other} exited {self}'.format(other=other, self=self))

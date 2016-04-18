@@ -1,4 +1,5 @@
 from pyscroll import PyscrollGroup
+import pygame
 
 class DepthMixin(object):
     '''A mixin for pygame.sprite.Group objects that sorts sprites during update
@@ -17,6 +18,10 @@ class DepthMixin(object):
         self._spritelist.sort(lambda l, r: spr_idx(l) - spr_idx(r))
 
 class DepthOrderedScrollGroup(DepthMixin, PyscrollGroup):
+    def __init__(self, *args, **kwargs):
+        self.debug = kwargs.pop('debug', False)
+        super(DepthOrderedScrollGroup, self).__init__(*args, **kwargs)
+
     # note: copied from pyscroll and modified for z drawing
     def draw(self, surface):
         """ Draw all sprites and map onto the surface
@@ -38,4 +43,17 @@ class DepthOrderedScrollGroup(DepthMixin, PyscrollGroup):
                 new_surfaces_append((spr.image, new_rect, gl(spr)))
             spritedict[spr] = new_rect
 
-        return self._map_layer.draw(surface, surface.get_rect(), new_surfaces)
+        ret = self._map_layer.draw(surface, surface.get_rect(), new_surfaces)
+
+        # debug
+        if self.debug:
+            zoom = self._map_layer._zoom_level
+            for spr in new_surfaces:
+                r = spr[1]
+                r.x *= zoom
+                r.y *= zoom
+                r.width *= zoom
+                r.height *= zoom
+                pygame.draw.rect(surface, (200, 100, 100), r, 1)
+
+        return ret
