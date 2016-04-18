@@ -236,8 +236,41 @@ class Player(pygame.sprite.Sprite):
         # and reset input
         self.reset_inputs()
 
+class TriggerMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(TriggerMixin, self).__init__(*args, **kwargs)
 
-class RisingPlatform(pygame.sprite.Sprite):
+        self.collisions_last_frame = set()
+        self.active_collisions = set()
+
+    def update(self, *args, **kwargs):
+        super(TriggerMixin, self).update(*args, **kwargs)
+
+        # find collisions not in last frame and do on_exit
+        exiting = self.active_collisions - self.collisions_last_frame
+        for c in exiting:
+            if hasattr(self, 'on_exit'):
+                self.on_exit(c)
+            self.active_collisions.remove(c)
+
+        # reset detection for this frame
+        self.collisions_last_frame.clear()
+
+    def on_collision(self, other):
+        if other is self:
+            return
+
+        # find new collisions and do on_enter
+        if hasattr(self, 'on_enter') and other not in self.active_collisions:
+            self.on_enter(other)
+
+        # track this collision for on_enter/on_exit
+        self.collisions_last_frame.add(other)
+        self.active_collisions.add(other)
+
+
+
+class RisingPlatform(TriggerMixin, pygame.sprite.Sprite):
     @classmethod
     def from_tmx(cls, tmx_object):
         rising_platform = RisingPlatform((tmx_object.x, tmx_object.y), int(tmx_object.floor))
@@ -251,8 +284,6 @@ class RisingPlatform(pygame.sprite.Sprite):
         self.height = floor * 32
         self.rect = pygame.Rect(position, (32, 32))
         self.image = pygame.image.load(resources.get("assets/rising_platform.png"))
-        self.collisions_last_frame = set()
-        self.active_collisions = set()
 
     @property
     def rising(self):
@@ -267,33 +298,14 @@ class RisingPlatform(pygame.sprite.Sprite):
         return not (self.rising or self.falling)
 
     def update(self, d_t):
+        super(RisingPlatform, self).update(d_t)
+
         if self.falling:
             self.height -= 1
         elif self.rising:
             self.height += 1
 
         self.z = self.height
-
-        # find collisions not in last frame and do on_exit
-        exiting = self.active_collisions - self.collisions_last_frame
-        for c in exiting:
-            self.on_exit(c)
-            self.active_collisions.remove(c)
-
-        # reset detection for this frame
-        self.collisions_last_frame.clear()
-
-    def on_collision(self, other):
-        if other is self:
-            return
-
-        # find new collisions and do on_enter
-        if other not in self.active_collisions:
-            self.on_enter(other)
-
-        # track this collision for on_enter/on_exit
-        self.collisions_last_frame.add(other)
-        self.active_collisions.add(other)
 
     def on_enter(self, other):
         logger.info('{other} entered {self}'.format(other=other, self=self))
