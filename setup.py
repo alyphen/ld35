@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name = "ld35",
-    version = "0.1.1",
+    version = "0.1.2",
     url = "https://github.com/seventhroot/ld35",
     author = 'Seventh Root',
     description = 'The Seventh Root entry for Ludum Dare 35',
@@ -19,11 +19,11 @@ setup(
     ]},
     setup_requires=['setuptools-markdown'],
     install_requires = [
-        'pygame==1.9.1',
-        'Pyganim==0.9.2',
-        'pyscroll==2.16.6',
-        'PyTMX==3.20.14',
-        'six==1.10.0',
+        'pygame>=1.9.1',
+        'Pyganim>=0.9.2',
+        'pyscroll>=2.16.6',
+        'PyTMX>=3.20.14',
+        'six>=1.10.0',
     ],
     scripts = ['scripts/ld35game.py'],
 
