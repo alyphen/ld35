@@ -15,12 +15,13 @@ logger = logging.getLogger()
 
 
 class Game:
-    def __init__(self, filename):
+    def __init__(self, filename=None):
         self._running = True
         self._display_surf = None
         self.size = self.width, self.height = 1280, 720
 
-        self.filename = filename
+        if filename is None:
+            filename = resources.get('examples/map_0.tmx')
 
         self.camera = Rect(0, 0, self.width, self.height)
 
@@ -36,7 +37,7 @@ class Game:
         self.ignore_walls = False
 
         # Load map data
-        tmx_data = load_pygame(self.filename)
+        tmx_data = load_pygame(filename)
 
         pygame.mixer.init()
         musicfile = tmx_data.properties.get('music')
@@ -250,5 +251,5 @@ class Game:
 if __name__ == "__main__":
     #logging.basicConfig()
     #logger.setLevel(logging.DEBUG)
-    game = Game(resources.get('examples/map_0.tmx'))
+    game = Game()
     game.run()

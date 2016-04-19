@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name = "ld35",
-    version = "0.1.2",
+    version = "0.1.3",
     url = "https://github.com/seventhroot/ld35",
     author = 'Seventh Root',
     description = 'The Seventh Root entry for Ludum Dare 35',
