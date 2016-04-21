@@ -1,5 +1,13 @@
-import os
-from setuptools import setup
+import os, sys
+#from setuptools import setup
+
+from cx_Freeze import setup, Executable
+
+base = None
+if sys.platform == "win32":
+    base = "Win32GUI"
+
+build_exe_options = {'include_files': ['ld35/assets', 'ld35/examples']}
 
 setup(
     name = "ld35",
@@ -26,8 +34,10 @@ setup(
         'six>=1.10.0',
     ],
     scripts = ['scripts/ld35game.py'],
+    executables = [Executable('scripts/ld35game.py', base=base)],
 
     # this is to compensate for pytmx.
     # better solution may be to give it a suitable resource loader
     zip_safe = False,
+    options = {"build_exe": build_exe_options},
 )
